@@ -1,0 +1,65 @@
+---
+- name: Install apt packages
+  become: true
+  apt:
+      package: '{{ apt_packages }}'
+
+- name: Install pip packages
+  become: true
+  pip:
+      name: '{{ pip_packages }}'
+      state: latest
+
+- name: Install Microsoft Git Credential Manager
+  become: true
+  block:
+      - name: Create a temporary file
+        tempfile:
+            suffix: -1.noarch.rpm
+        register: tmp_rpm
+
+      - name: Create a temporary file
+        tempfile:
+            suffix: .txt
+        register: tmp_txt
+
+      - name: Download GCM
+        get_url:
+            url: https://github.com
+                {#-#}/Microsoft
+                {#-#}/Git-Credential-Manager-for-Mac-and-Linux
+                {#-#}/releases
+                {#-#}/download
+                {#-#}/git-credential-manager-{{ gcm.version }}
+                {#-#}/git-credential-manager-{{ gcm.version }}-1.noarch.rpm
+            dest: '{{ tmp_rpm.path }}'
+
+      - name: Copy GPG signing key
+        register: gpg_copy
+        copy:
+            source: msft-rpm-gpg-key.txt
+            dest: '{{ tmp_txt.path }}'
+
+      - name: Import GPG signing key
+        when: gpg_copy.changed
+        command: rpm --import {{ tmp_txt.path }}
+
+      - name: Verify GCM RPM
+        register: gpg_verify
+        command: rpm
+            --checksig
+            --verbose
+            {{ tmp_rpm.path }}
+        # make sure we have the right verification line
+        failed_when: gpg_verify.stdout_lines
+            |select("equalto", gcm.gpg_ok)
+            |first
+            |default(true)
+
+      - name: Install GCM RPM
+        command: rpm --install {{ tmp_rpm.path }}
+
+      - name: Install GCM
+        become: true
+        become_user: '{{ ansible_hostname }}'
+        command: git-credential-manager install

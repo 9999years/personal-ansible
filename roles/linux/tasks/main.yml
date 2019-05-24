@@ -1,0 +1,9 @@
+---
+- name: Base config
+  import_tasks: config.yml
+
+- name: Install packages & other software
+  import_tasks: packages.yml
+
+- name: Install Vim config
+  import_tasks: vim.yml

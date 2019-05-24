@@ -1,0 +1,6 @@
+---
+- name: Configure Linux
+  hosts: localhost
+  connection: local
+  roles:
+          - linux

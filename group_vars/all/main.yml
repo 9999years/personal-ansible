@@ -1,0 +1,89 @@
+---
+dotfiles_repo:
+    git: https://github.com/9999years/dotfiles.git
+    dest: ~/.dotfiles
+dotfiles:
+    - .bash_profile
+    - .bashrc
+    - .curlrc
+    - .fonts.conf
+    - .gitattributes_global
+    - .gitconfig
+    - .gitignore_global
+    - .latexmkrc
+    - .minttyrc
+    - .pip.conf
+    - .ptpython/config.py
+    - .pythonrc
+    - .tmux.conf
+    - .tmux.conf.sh
+    - .Xresources
+    - .youtube-dl.conf
+    - .config/fish/config.fish
+    - .config/fish/functions
+    - .config/alacritty/alacritty.yml
+
+apt_packages:
+      # editors
+    - vim
+    - vim-gtk
+    - neovim
+      # shell utilities / dev tools
+    - tmux
+    - shellcheck
+    - rpm
+    - silversearcher-ag
+    - colordiff
+    - cloc
+    - ghostscript
+    - imagemagick
+    - graphviz
+    - hugo
+    - pandoc
+    #- pdftk
+      # git
+    - git
+    - git-hub
+    - git-lfs
+    - gitk
+      # programming languages
+    - ghc
+    - texlive
+    - openjdk-11-jdk
+    - ruby
+    - sass
+    - perl
+    - nodejs
+
+pip_packages:
+    - atomicwrites
+    - attrs
+    - beautifulsoup4
+    - cached-property
+    - cachetools
+    - colorama
+    - grip
+    - more-itertools
+    - numpy
+    - numba
+    - Pillow
+    - pynvim
+    - neovim
+    - requests
+    - termcolor
+    - toml
+    - PyYAML
+    - urllib3
+    - virtualenv
+    - youtube-dl
+    - wcwidth
+    - ptpython
+    - pytest
+
+gcm:
+    version: 2.0.4
+    gpg_ok: 'V4 RSA/SHA256 Signature, key ID ba34dbc2: OK'
+
+vimfiles:
+    repo: https://github.com/9999years/vimfiles.git
+    dest: ~/.vim
