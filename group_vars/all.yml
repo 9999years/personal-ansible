@@ -44,7 +44,7 @@ apt_packages:
     - hugo
     - pandoc
     - sshfs
-    - reptyer
+    #- reptyer
     #- pdftk
       # git
     - git
