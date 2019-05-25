@@ -1,0 +1,128 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+
+dotfiles_repo:
+    git: https://github.com/9999years/dotfiles.git
+    dest: ~/.dotfiles
+dotfiles:
+    - .bash_profile
+    - .bashrc
+    - .curlrc
+    - .fonts.conf
+    - .gitattributes_global
+    - .gitconfig
+    - .gitignore_global
+    - .latexmkrc
+    - .minttyrc
+    - .pip.conf
+    - .ptpython/config.py
+    - .pythonrc
+    - .tmux.conf
+    - .tmux.conf.sh
+    - .Xresources
+    - .youtube-dl.conf
+    - .config/fish/config.fish
+    - .config/fish/functions
+    - .config/alacritty/alacritty.yml
+
+apt_packages:
+      # editors
+    - vim
+    - vim-gtk
+    - neovim
+      # shell utilities / dev tools
+    - linuxbrew-wrapper
+    - build-essential
+    - tmux
+    - shellcheck
+    - silversearcher-ag
+    - colordiff
+    - cloc
+    - ghostscript
+    - imagemagick
+    - graphviz
+    - hugo
+    - pandoc
+    - sshfs
+    - reptyer
+    #- pdftk
+      # git
+    - git
+    - git-hub
+    - git-lfs
+    - gitk
+      # programming languages
+    - ghc
+    - texlive
+    - openjdk-11-jdk
+    - ruby
+    - ruby-dev
+    - sass
+    - perl
+    - nodejs
+    - golang
+
+homebrew_bin: /home/linuxbrew/.linuxbrew/Homebrew/bin/brew
+homebrew_packages:
+    - git-credential-manager
+    - hub
+    - fish
+    - rustup-init
+    - python
+
+pip_packages:
+    - atomicwrites
+    - attrs
+    - beautifulsoup4
+    - cached-property
+    - cachetools
+    - colorama
+    - grip
+    - more-itertools
+    - numpy
+    - numba
+    - Pillow
+    - pynvim
+    - neovim
+    - requests
+    - termcolor
+    - toml
+    - PyYAML
+    - urllib3
+    - virtualenv
+    - youtube-dl
+    - wcwidth
+    - ptpython
+    - pytest
+
+ruby_gems:
+    - neovim
+    - uniscribe
+
+hub_version: 2.11.2
+hub_arch: linux-amd64
+hub_top_dir: hub-{{ hub_arch }}-{{ hub_version}}
+hub_url: https://github.com/github/hub/releases/download/v{{ hub_version -}}
+        /{{ hub_top_dir }}.tgz
+
+gcm_version: 2.0.4
+gcm_gpg_ok: 'V4 RSA/SHA256 Signature, key ID ba34dbc2: OK'
+gcm_dest: '/usr/local/bin/git-credential-manager-{{ gcm_version }}.jar'
+gcm_shim_dest: '/usr/local/bin/git-credential-manager'
+
+vimfiles:
+    repo: https://github.com/9999years/vimfiles.git
+    dest: ~/.vim
+
+rustup_arch: x86_64-unknown-linux-gnu
+rustup_url: https://static.rust-lang.org/rustup/dist/{{ rustup_arch }}/rustup-init
+cargo_bin: '{{ ansible_user_dir }}/.cargo/bin/cargo'
+
+fish_version: 3.0.2
+fish_repo: http://ppa.launchpad.net/fish-shell/release-3
+linuxbrew_fish: /home/linuxbrew/.linuxbrew/bin/fish
+
+homebrew_install: https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
+
+talisman_url: https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash
+pre_commit_tpl: '{{ ansible_user_dir }}/.git-template/hooks/pre-commit'

@@ -1,0 +1,9 @@
+- name: Check for Linuxbrew
+  register: linuxbrew_stat
+  stat:
+      path: /home/linuxbrew/.linuxbrew/bin/brew
+  changed_when: not (linuxbrew_stat.stat.exists and linuxbrew_stat.stat.executable)
+
+- name: Install Linuxbrew
+  when: linuxbrew_stat is changed
+  shell: yes | sh -c "$(curl -fsSL {{ homebrew_install }})"

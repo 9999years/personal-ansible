@@ -1,0 +1,43 @@
+---
+- name: Check for fish
+  register: which_fish
+  command: which fish
+  failed_when: false
+  changed_when: which_fish.rc == 1
+
+- name: Check fish version
+  register: fish_version_check
+  command: fish -v
+  when: which_fish is not changed
+  changed_when: fish_version_check.stdout.split()[2] != fish_version
+
+- name: Install fish
+  when: which_fish is changed or fish_version_check is changed
+  block:
+      - name: Check for fish repository
+        command: apt-cache policy
+        register: apt_policy
+        changed_when: fish_repo not in apt_policy.stdout
+
+      - name: Add fish repository to apt
+        when: apt_policy is changed
+        become: true
+        command: apt-add-repository -y ppa:fish-shell/release-3
+
+      - name: Install fish
+        become: true
+        apt:
+            package: fish
+            update_cache: true
+            state: latest
+
+- name: Find fish
+  command: which fish
+  register: which_fish
+  changed_when: which_fish.rc == 0
+
+- name: chsh fish
+  when: which_fish.changed
+  become: true
+  command: chsh {{ ansible_user_id }}
+        --shell {{ which_fish.stdout }}

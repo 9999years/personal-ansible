@@ -1,28 +1,18 @@
 ---
-- name: Clone dotfiles
-  git:
-      repo: '{{ dotfiles_repo.git }}'
-      dest: '{{ dotfiles_repo.dest }}'
-  register: dotfiles_clone
+- name: Check for Linuxbrew fish
+  stat:
+      path: '{{ linuxbrew_fish }}'
+  register: brew_fish
+  changed_when: brew_fish.stat.exists and brew_fish.stat.executable
 
-- name: Create dotfile directories
-  loop: '{{ dotfiles }}'
-  when: "'/' in item"
-  file:
-          path: '{{ ansible_user_dir }}/{{ item|dirname }}'
-          state: directory
-
-- name: Link dotfiles
-  loop: '{{ dotfiles }}'
-  file:
-      path: '{{ ansible_user_dir }}/{{ item }}'
-      src: '{{ dotfiles_repo.dest }}/{{ item }}'
-      state: link
-      force: true # clobber
+- name: Add Linuxbrew fish to /etc/shells
+  when: brew_fish is changed
+  lineinfile:
+      path: /etc/shells
+      line: '{{ linuxbrew_fish }}'
 
 - name: Find fish
   command: which fish
-  failed_when: false
   register: which_fish
   changed_when: which_fish.rc == 0
 

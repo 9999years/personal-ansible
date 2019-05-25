@@ -1,0 +1,27 @@
+---
+- name: Check for Microsoft Git Credential Manager
+  stat:
+      path: '{{ gcm_shim_dest }}'
+  register: gcm_stat
+  changed_when: not (gcm_stat.stat.exists and gcm_stat.stat.executable)
+
+- name: Install Microsoft Git Credential Manager
+  become: true
+  when: gcm_stat.changed
+  block:
+      - name: Download GCM
+        get_url:
+            url: https://github.com
+                {#-#}/Microsoft
+                {#-#}/Git-Credential-Manager-for-Mac-and-Linux
+                {#-#}/releases
+                {#-#}/download
+                {#-#}/git-credential-manager-{{ gcm_version }}
+                {#-#}/git-credential-manager-{{ gcm_version }}.jar
+            dest: '{{ gcm_dest }}'
+
+      - name: Add GCM shim
+        template:
+            src: gcm.sh.jinja2
+            dest: '{{ gcm_shim_dest }}'
+            mode: 0755

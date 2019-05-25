@@ -1,0 +1,26 @@
+---
+- name: Install apt packages
+  become: true
+  apt:
+      package: '{{ apt_packages }}'
+
+- name: Install pip packages
+  become: true
+  pip:
+      executable: pip3
+      name: '{{ pip_packages }}'
+      state: latest
+
+- name: Install Ruby Gems
+  become: true
+  loop: '{{ ruby_gems }}'
+  gem:
+      name: '{{ item }}'
+      state: latest
+      user_install: false
+
+- name: Install Linuxbrew packages
+  homebrew:
+      state: latest
+      package: '{{ homebrew_packages }}'
+      path: '{{ homebrew_bin }}'

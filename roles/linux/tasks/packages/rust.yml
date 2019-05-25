@@ -1,0 +1,30 @@
+---
+- name: Check for Rust
+  register: rust_check
+  stat:
+      path: /xxx
+  changed_when: not (rust_check.stat.exists and rust_check.stat.executable)
+
+- name: Install Rust
+  when: rust_check.changed
+  block:
+      - name: Create temporary file
+        # Create a directory because if `rustup-init` isn't named `rustup-init`
+        # it doesn't know what to do.
+        tempfile:
+            state: directory
+        register: rustup_tmp
+
+      - name: Download rustup-init
+        get_url:
+            url: '{{ rustup_url }}'
+            dest: '{{ rustup_tmp.path }}/rustup-init'
+            force: true
+            mode: 0755
+
+      - name: Execute rustup-init
+        become: true
+        command: >-
+            {{ rustup_tmp.path }}/rustup-init
+            --no-modify-path
+            -y

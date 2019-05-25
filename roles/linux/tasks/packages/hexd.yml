@@ -1,0 +1,30 @@
+---
+- name: Check for hexd
+  register: hexd_stat
+  stat:
+      path: /usr/local/bin/hexd
+  changed_when: not hexd_stat.stat.exists
+
+- name: Build hexd
+  when: hexd_stat is changed
+  block:
+      - name: Create temporary directory
+        register: tmpdir
+        tempfile:
+            state: directory
+
+      - name: Clone repository
+        git:
+            repo: https://github.com/FireyFly/hexd.git
+            dest: '{{ tmpdir.path }}'
+
+      - name: Build hexd
+        command: make
+        args:
+            chdir: '{{ tmpdir.path }}'
+
+      - name: Install hexd
+        become: true
+        command: make install
+        args:
+            chdir: '{{ tmpdir.path }}'

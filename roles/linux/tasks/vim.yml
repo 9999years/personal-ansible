@@ -1,15 +1,22 @@
 ---
 - name: Clone vimfiles repository
   register: vimfiles_git
+  become: true
+  become_user: '{{ ansible_hostname }}'
   git:
       repo: '{{ vimfiles.repo }}'
       dest: '{{ vimfiles.dest }}'
 
 - name: Link nvim config to vimfiles
+  become: true
+  become_user: '{{ ansible_hostname }}'
   file:
           path: '{{ ansible_user_dir }}/.config/nvim'
           src: '{{ vimfiles.dest }}'
+          state: link
 
 - name: Setup Vim plugins
+  become: true
+  become_user: '{{ ansible_hostname }}'
   when: vimfiles_git.changed
   command: vim +PlugInstall +qall!

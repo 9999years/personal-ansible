@@ -1,0 +1,30 @@
+---
+- name: Check for pixd
+  register: pixd_stat
+  stat:
+      path: /usr/local/bin/pixd
+  changed_when: not pixd_stat.stat.exists
+
+- name: Build pixd
+  when: pixd_stat is changed
+  block:
+      - name: Create temporary directory
+        register: tmpdir
+        tempfile:
+            state: directory
+
+      - name: Clone repository
+        git:
+            repo: https://github.com/FireyFly/pixd.git
+            dest: '{{ tmpdir.path }}'
+
+      - name: Build pixd
+        command: make
+        args:
+            chdir: '{{ tmpdir.path }}'
+
+      - name: Install pixd
+        become: true
+        command: make install
+        args:
+            chdir: '{{ tmpdir.path }}'

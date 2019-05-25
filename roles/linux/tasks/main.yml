@@ -1,9 +1,42 @@
 ---
-- name: Base config
-  import_tasks: config.yml
+- name: Initial config
+  tags:
+          - config
+  import_tasks: init.yml
+
+- name: Install Linuxbrew
+  tags:
+      - packages
+      - brew
+      - homebrew
+      - linuxbrew
+  import_tasks: packages/linuxbrew.yml
 
 - name: Install packages & other software
-  import_tasks: packages.yml
+  tags:
+          - packages
+  import_tasks: packages/managers.yml
 
 - name: Install Vim config
+  tags:
+          - config
+          - vim
   import_tasks: vim.yml
+
+- name: Install Talisman (github.com/thoughtworks/talisman)
+  tags:
+      - packages
+      - talisman
+  import_tasks: packages/talisman.yml
+
+- name: Install hexd (github.com/FireyFly/hexd)
+  tags:
+      - packages
+      - hexd
+  import_tasks: packages/hexd.yml
+
+- name: Install pixd (github.com/FireyFly/pixd)
+  tags:
+      - packages
+      - pixd
+  import_tasks: packages/pixd.yml

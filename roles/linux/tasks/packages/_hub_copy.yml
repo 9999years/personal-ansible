@@ -1,0 +1,18 @@
+---
+# included by packages.yml
+- name: Ensure /usr/local/{{ hub_file|dirname }} exists
+  become: true
+  when: "'/' in hub_file"
+  file:
+      path: '/usr/local/{{ hub_file|dirname }}'
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
+
+- name: Copy /usr/local/{{ hub_file }}
+  become: true
+  copy:
+      remote_src: true
+      src: '{{ hub_tar_root }}/{{ hub_file }}'
+      dest: '/usr/local/{{ hub_file }}'
