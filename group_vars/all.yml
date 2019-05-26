@@ -149,3 +149,11 @@ pre_commit_tpl: '{{ ansible_user_dir }}/.git-template/hooks/pre-commit'
 
 tpm: '{{ ansible_user_dir }}/.tmux/plugins/tpm'
 tpm_url: https://github.com/tmux-plugins/tpm
+
+sass_version: 1.20.2
+sass_arch: linux-x64
+sass_url: https://github.com/sass/dart-sass/releases/download/
+    {{- sass_version }}/dart-sass-{{ sass_version }}-{{ sass_arch }}.tar.gz
+sass_dest: /usr/local/libexec
+sass_bin_dir: '{{ sass_dest }}/dart-sass'
+sass_link_dir: /usr/local/bin

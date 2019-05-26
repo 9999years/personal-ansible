@@ -52,6 +52,12 @@
       - pixd
   import_tasks: pixd.yml
 
+- name: Install dart-sass
+  tags:
+      - packages
+      - sass
+  import_tasks: sass.yml
+
 - name: Install TeX Live
   tags:
       - packages

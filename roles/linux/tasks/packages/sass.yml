@@ -1,0 +1,38 @@
+---
+- name: Check for Sass
+  stat:
+      path: '{{ sass_link_dir }}/sass'
+  register: sass_stat
+  changed_when: not (sass_stat.stat.exists and sass_stat.stat.executable)
+
+- name: Check Sass version
+  when: sass_stat is not changed
+  register: sass_version_check
+  command: '{{ sass_link_dir }}/sass --version'
+  changed_when: sass_version_check.stdout != sass_version
+
+- name: Install Sass
+  when: sass_stat is changed or sass_version_check is changed
+  become: true
+  block:
+      - name: Ensure {{ sass_dest }} exists
+        file:
+            path: '{{ sass_dest }}'
+            state: directory
+            mode: 0755
+
+      - name: Download dart-sass
+        unarchive:
+            remote_src: true
+            src: '{{ sass_url }}'
+            dest: '{{ sass_dest }}'
+
+      - name: Create links to dart-sass executables
+        loop:
+            - dart-sass
+            - sass
+        file:
+            path: '{{ sass_link_dir }}/{{ item }}'
+            src: '{{ sass_bin_dir }}/{{ item }}'
+            state: link
+            mode: 0755
