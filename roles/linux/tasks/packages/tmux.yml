@@ -1,0 +1,10 @@
+- name: Install TPM (github.com/tmux-plugins/tpm)
+  register: clone_tpm
+  git:
+          repo: '{{ tpm_url }}'
+          dest: '{{ tpm }}'
+
+- name: Install Tmux plugins
+  when: clone_tpm is changed
+  shell: tmux source "{{ ansible_user_dir }}/.tmux.conf"
+        && {{ tpm }}/bin/install_plugins

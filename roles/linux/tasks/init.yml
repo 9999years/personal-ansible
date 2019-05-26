@@ -1,4 +1,7 @@
 ---
+- name: Set umask 022
+  command: umask 022
+
 - name: Clone dotfiles
   become: true
   become_user: '{{ ansible_hostname }}'

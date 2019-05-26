@@ -2,6 +2,7 @@
 
 To use:
 
-    git clone https://github.com/9999years/personal-ansible.git \
+    umask 022 && mkdir projects && cd projects \
+    && git clone https://github.com/9999years/personal-ansible.git \
     && cd personal-ansible \
-    && ./bootstrap.sh
+    && sudo ./bootstrap.sh

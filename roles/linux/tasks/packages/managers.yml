@@ -42,3 +42,8 @@
       name: '{{ item }}'
       state: latest
       user_install: false
+
+- name: Install Vim plugins
+  become: true
+  become_user: '{{ ansible_hostname }}'
+  shell: "yes '\n' | vim +PlugInstall +qall!"

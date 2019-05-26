@@ -23,6 +23,7 @@ dotfiles:
     - .youtube-dl.conf
     - .config/fish/config.fish
     - .config/fish/functions
+    - .config/fisher/fishfile
     - .config/alacritty/alacritty.yml
 
 apt_packages:
@@ -70,7 +71,7 @@ homebrew_packages:
     - fish
     - python
     - fzf
-    - sass/sass/sass
+    # - sass/sass/sass
     - jq
 
 homebrew_links:
@@ -109,7 +110,7 @@ pip_packages:
     - Pygments
     - python-decouple
     - arrow
-    - dateutil
+    - python-dateutil
     - mypy
 
 ruby_gems:
@@ -138,8 +139,13 @@ cargo_bin: '{{ ansible_user_dir }}/.cargo/bin/cargo'
 fish_version: 3.0.2
 fish_repo: http://ppa.launchpad.net/fish-shell/release-3
 linuxbrew_fish: '{{ homebrew_bin_dir }}/fish'
+fisher_url: https://git.io/fisher
+fisher: '{{ ansible_user_dir }}/.config/fish/functions/fisher.fish'
 
 homebrew_install: https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
 
 talisman_url: https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash
 pre_commit_tpl: '{{ ansible_user_dir }}/.git-template/hooks/pre-commit'
+
+tpm: '{{ ansible_user_dir }}/.tmux/plugins/tpm'
+tpm_url: https://github.com/tmux-plugins/tpm

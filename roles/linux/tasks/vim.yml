@@ -14,8 +14,3 @@
           path: '{{ ansible_user_dir }}/.config/nvim'
           src: '{{ vimfiles.dest }}'
           state: link
-
-- name: Setup Vim plugins
-  become: true
-  become_user: '{{ ansible_hostname }}'
-  shell: "yes '\n' | vim +PlugInstall +qall!"
