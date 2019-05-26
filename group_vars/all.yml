@@ -53,7 +53,6 @@ apt_packages:
     - gitk
       # programming languages
     - ghc
-    - texlive
     - openjdk-11-jdk
     - ruby
     - ruby-dev
@@ -62,13 +61,24 @@ apt_packages:
     - nodejs
     - golang
 
-homebrew_bin: /home/linuxbrew/.linuxbrew/Homebrew/bin/brew
+homebrew_root: /home/linuxbrew/.linuxbrew
+homebrew_bin: '{{ homebrew_root }}/Homebrew/bin/brew'
+homebrew_bin_dir: '{{ homebrew_root }}/bin'
 homebrew_packages:
     - git-credential-manager
     - hub
     - fish
-    - rustup-init
     - python
+    - fzf
+
+homebrew_links:
+    - git-credential-manager
+    - fish
+    - hub
+    - python3
+    - python3.7
+    - pip3
+    - pip3.7
 
 pip_packages:
     - atomicwrites
@@ -120,7 +130,7 @@ cargo_bin: '{{ ansible_user_dir }}/.cargo/bin/cargo'
 
 fish_version: 3.0.2
 fish_repo: http://ppa.launchpad.net/fish-shell/release-3
-linuxbrew_fish: /home/linuxbrew/.linuxbrew/bin/fish
+linuxbrew_fish: '{{ homebrew_bin_dir }}/fish'
 
 homebrew_install: https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
 

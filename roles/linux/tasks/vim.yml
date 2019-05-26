@@ -18,5 +18,4 @@
 - name: Setup Vim plugins
   become: true
   become_user: '{{ ansible_hostname }}'
-  when: vimfiles_git.changed
-  command: vim +PlugInstall +qall!
+  shell: "yes '\n' | vim +PlugInstall +qall!"

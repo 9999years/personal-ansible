@@ -1,7 +1,7 @@
 - name: Check for Linuxbrew
   register: linuxbrew_stat
   stat:
-      path: /home/linuxbrew/.linuxbrew/bin/brew
+      path: '{{ homebrew_bin_dir }}/brew'
   changed_when: not (linuxbrew_stat.stat.exists and linuxbrew_stat.stat.executable)
 
 - name: Install Linuxbrew

@@ -4,4 +4,4 @@ set -e
 apt update
 apt install -y python-pip
 pip install ansible
-ansible-playbook -K site.yml
+sudo -u $(hostname) ansible-playbook -K site.yml

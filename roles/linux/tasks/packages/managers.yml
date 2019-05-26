@@ -1,13 +1,37 @@
 ---
 - name: Install apt packages
   become: true
+  loop: '{{ apt_packages }}'
   apt:
-      package: '{{ apt_packages }}'
+      package: '{{ item }}'
+
+- name: Install Linuxbrew packages
+  loop: '{{ homebrew_packages }}'
+  vars:
+          # Spurious error
+          # https://github.com/microsoft/WSL/issues/1838
+          nice_warning: 'nice: cannot set niceness: Permission denied'
+  homebrew:
+      state: latest
+      package: '{{ item }}'
+      path: '{{ homebrew_bin }}'
+  register: brew_install
+  failed_when: brew_install is failed
+          and (brew_install.msg|replace(nice_warning, '')).strip() != ''
+
+- name: Link Linuxbrew binaries to /usr/local/bin
+  loop: '{{ homebrew_links }}'
+  become: true
+  file:
+      state: link
+      src: '{{ homebrew_bin_dir }}/{{ item }}'
+      path: '/usr/local/bin/{{ item }}'
+      mode: 0755
 
 - name: Install pip packages
   become: true
   pip:
-      executable: pip3
+      executable: '{{ homebrew_bin_dir }}/pip3'
       name: '{{ pip_packages }}'
       state: latest
 
@@ -18,9 +42,3 @@
       name: '{{ item }}'
       state: latest
       user_install: false
-
-- name: Install Linuxbrew packages
-  homebrew:
-      state: latest
-      package: '{{ homebrew_packages }}'
-      path: '{{ homebrew_bin }}'

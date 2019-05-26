@@ -6,6 +6,7 @@
   changed_when: not pre_commit.stat.exists
 
 - name: Check for Talisman pre-commit hook
+  when: pre_commit is not changed
   register: talisman_grep
   command: grep talisman {{ pre_commit_tpl }}
   failed_when: talisman_grep.rc not in [0, 1]

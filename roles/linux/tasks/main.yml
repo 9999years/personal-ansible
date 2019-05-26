@@ -23,6 +23,12 @@
           - vim
   import_tasks: vim.yml
 
+- name: Install Rust
+  tags:
+          - packages
+          - rust
+  import_tasks: packages/rust.yml
+
 - name: Install Talisman (github.com/thoughtworks/talisman)
   tags:
       - packages
@@ -40,3 +46,11 @@
       - packages
       - pixd
   import_tasks: packages/pixd.yml
+
+- name: Install TeX Live
+  tags:
+      - packages
+      - tex
+  become: true
+  apt:
+          package: texlive
