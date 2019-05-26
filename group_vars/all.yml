@@ -23,7 +23,7 @@ dotfiles:
     - .youtube-dl.conf
     - .config/fish/config.fish
     - .config/fish/functions
-    - .config/fisher/fishfile
+    - .config/fish/fishfile
     - .config/alacritty/alacritty.yml
 
 apt_packages:

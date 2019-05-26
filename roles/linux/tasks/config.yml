@@ -7,17 +7,13 @@
 
 - name: Add Linuxbrew fish to /etc/shells
   when: brew_fish is changed
+  become: true
   lineinfile:
       path: /etc/shells
       line: '{{ linuxbrew_fish }}'
 
-- name: Find fish
-  command: which fish
-  register: which_fish
-  changed_when: which_fish.rc == 0
-
 - name: chsh fish
-  when: which_fish.changed
+  when: brew_fish is changed
   become: true
   command: chsh {{ ansible_user_id }}
-        --shell {{ which_fish.stdout }}
+        --shell {{ linuxbrew_fish }}

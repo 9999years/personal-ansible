@@ -1,6 +1,16 @@
 ---
-- name: Set umask 022
-  command: umask 022
+- name: Give self passwordless sudo
+  become: true
+  template:
+      src: sudoers.jinja2
+      dest: /etc/sudoers.d/{{ ansible_user_id }}
+      mode: 0440
+
+- name: Ensure umask 022 in /etc/profile
+  become: true
+  lineinfile:
+      path: /etc/profile
+      line: umask 022
 
 - name: Clone dotfiles
   become: true
@@ -29,10 +39,3 @@
       src: '{{ dotfiles_repo.dest }}/{{ item }}'
       state: link
       force: true # clobber
-
-- name: Give self passwordless sudo
-  become: true
-  template:
-      src: sudoers.jinja2
-      dest: /etc/sudoers.d/{{ ansible_user_id }}
-      mode: 0440

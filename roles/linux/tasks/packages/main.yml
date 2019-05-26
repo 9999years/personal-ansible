@@ -1,5 +1,6 @@
 ---
 - name: Install Fish plugins
+  when: false  # NOTE: this task is disabled until WSL gets some bugs fixed
   tags:
           - fish
           - packages
