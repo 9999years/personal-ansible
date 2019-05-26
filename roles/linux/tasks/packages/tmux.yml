@@ -6,5 +6,7 @@
 
 - name: Install Tmux plugins
   when: clone_tpm is changed
-  shell: tmux source "{{ ansible_user_dir }}/.tmux.conf"
+  shell: tmux new &;
+        tmux source "{{ ansible_user_dir }}/.tmux.conf"
         && {{ tpm }}/bin/install_plugins
+        && tmux kill-session

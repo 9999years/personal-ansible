@@ -6,6 +6,8 @@
       package: '{{ item }}'
 
 - name: Install Linuxbrew packages
+  become: true
+  become_user: '{{ ansible_hostname }}'
   loop: '{{ homebrew_packages }}'
   vars:
           # Spurious error

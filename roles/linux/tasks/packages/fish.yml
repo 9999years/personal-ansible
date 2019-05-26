@@ -7,4 +7,10 @@
 
 - name: Install fisher (github.com/jorgebucaran/fisher)
   when: fisher_stat is changed
-  command: curl {{ fisher_url }} --create-dirs -sLo {{ fisher }}
+  get_url:
+      url: '{{ fisher_url }}'
+      dest: '{{ fisher }}'
+
+- name: Install fisher plugins
+  when: fisher_stat is changed
+  command: fish -c fisher
