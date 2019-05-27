@@ -50,6 +50,7 @@ apt_packages:
     - sshfs
     - lftp
     - colortest
+    - source-highlight
     #- reptyer
     #- pdftk
       # git
