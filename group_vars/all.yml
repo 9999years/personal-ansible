@@ -24,7 +24,10 @@ dotfiles:
     - .config/fish/config.fish
     - .config/fish/functions
     - .config/fisher_local/fishfile
-    - .config/alacritty/alacritty.yml
+
+symlinks:
+    - from: '{{ ansible_user_dir }}/.config/alacritty/alacritty.yml'
+      to: /mnt/c/Users/arvensis/AppData/Roaming/alacritty/alacritty.yml
 
 apt_packages:
       # editors
@@ -46,6 +49,7 @@ apt_packages:
     - pandoc
     - sshfs
     - lftp
+    - colortest
     #- reptyer
     #- pdftk
       # git
@@ -60,6 +64,7 @@ apt_packages:
     - ruby-dev
     - perl
     - nodejs
+    - npm
     - golang
 
 homebrew_root: /home/linuxbrew/.linuxbrew
@@ -116,6 +121,10 @@ pip_packages:
 ruby_gems:
     - neovim
     - uniscribe
+
+npm_packages:
+    - neovim
+    - typescript
 
 hub_version: 2.11.2
 hub_arch: linux-amd64

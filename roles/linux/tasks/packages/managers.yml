@@ -45,6 +45,13 @@
       state: latest
       user_install: false
 
+- name: Install Node packages
+  become: true
+  loop: '{{ npm_packages }}'
+  npm:
+      global: true
+      name: '{{ item }}'
+
 - name: Install Vim plugins
   become: true
   become_user: '{{ ansible_hostname }}'

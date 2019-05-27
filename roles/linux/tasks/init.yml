@@ -39,3 +39,14 @@
       src: '{{ dotfiles_repo.dest }}/{{ item }}'
       state: link
       force: true # clobber
+
+- name: Create other links
+  become: true
+  become_user: '{{ ansible_hostname }}'
+  loop: '{{ symlinks }}'
+  file:
+      path: '{{ item.from }}'
+      src: '{{ item.to }}'
+      state: link
+      force: true # clobber
+
