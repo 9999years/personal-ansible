@@ -1,27 +1,50 @@
 ---
+- name: Install apt packages (essential)
+  become: true
+  loop: '{{ apt_packages_essential }}'
+  when: item not in apt_packages_skip
+  apt:
+      package: '{{ item }}'
+
 - name: Install apt packages
   become: true
   loop: '{{ apt_packages }}'
+  when: item not in apt_packages_skip
+  apt:
+      package: '{{ item }}'
+
+- name: Install apt packages (extra)
+  become: true
+  loop: '{{ apt_packages_extra }}'
+  when: item not in apt_packages_skip
   apt:
       package: '{{ item }}'
 
 - name: Install Linuxbrew packages
-  become: true
-  become_user: '{{ ansible_hostname }}'
-  loop: '{{ homebrew_packages }}'
+  tags:
+      - brew
+      - homebrew
+      - linuxbrew
+  include_tasks: linuxbrew_packages.yml
   vars:
-          # Spurious error
-          # https://github.com/microsoft/WSL/issues/1838
-          nice_warning: 'nice: cannot set niceness: Permission denied'
-  homebrew:
-      state: latest
-      package: '{{ item }}'
-      path: '{{ homebrew_bin }}'
-  register: brew_install
-  failed_when: brew_install is failed
-          and (brew_install.msg|replace(nice_warning, '')).strip() != ''
+      packages: '{{ homebrew_packages }}'
+
+- name: Install Linuxbrew packages (extra)
+  tags:
+      - brew
+      - homebrew
+      - linuxbrew
+  include_tasks: linuxbrew_packages.yml
+  vars:
+      packages: '{{ homebrew_packages_extra }}'
 
 - name: Link Linuxbrew binaries to /usr/local/bin
+  tags:
+      - packages
+      - brew
+      - homebrew
+      - linuxbrew
+  when: install_homebrew|bool
   loop: '{{ homebrew_links }}'
   become: true
   file:
@@ -46,13 +69,17 @@
       user_install: false
 
 - name: Install Node packages
-  become: true
   loop: '{{ npm_packages }}'
+  tags:
+      - node
+      - npm
   npm:
+      executable: '{{ npm_bin }}'
       global: true
       name: '{{ item }}'
+      state: latest
 
 - name: Install Vim plugins
   become: true
-  become_user: '{{ ansible_hostname }}'
+  become_user: '{{ user }}'
   shell: "yes '\n' | vim +PlugInstall +qall!"

@@ -1,6 +1,6 @@
 ---
 - name: Give self passwordless sudo
-  when: ansible_is_wsl
+  when: is_wsl|bool
   become: true
   template:
       src: sudoers.jinja2
@@ -8,7 +8,7 @@
       mode: 0440
 
 - name: Ensure umask 022 in /etc/profile
-  when: ansible_is_wsl
+  when: is_wsl|bool
   become: true
   lineinfile:
       path: /etc/profile
@@ -16,7 +16,7 @@
 
 - name: Clone dotfiles
   become: true
-  become_user: '{{ ansible_hostname }}'
+  become_user: '{{ user }}'
   git:
       repo: '{{ dotfiles_repo.git }}'
       dest: '{{ dotfiles_repo.dest }}'
@@ -25,7 +25,7 @@
 
 - name: Create dotfile directories
   become: true
-  become_user: '{{ ansible_hostname }}'
+  become_user: '{{ user }}'
   loop: '{{ dotfiles }}'
   when: "'/' in item"
   file:
@@ -34,7 +34,7 @@
 
 - name: Link dotfiles
   become: true
-  become_user: '{{ ansible_hostname }}'
+  become_user: '{{ user }}'
   loop: '{{ dotfiles }}'
   file:
       path: '{{ ansible_user_dir }}/{{ item }}'
@@ -44,7 +44,7 @@
 
 - name: Create other links
   become: true
-  become_user: '{{ ansible_hostname }}'
+  become_user: '{{ user }}'
   loop: '{{ symlinks }}'
   file:
       path: '{{ item.from }}'

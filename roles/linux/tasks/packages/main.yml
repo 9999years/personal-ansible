@@ -1,4 +1,20 @@
 ---
+- name: Install Linuxbrew
+  tags:
+      - packages
+      - brew
+      - homebrew
+      - linuxbrew
+  import_tasks: linuxbrew.yml
+
+- name: Install packages & other software
+  tags:
+      - packages
+      - brew
+      - homebrew
+      - linuxbrew
+  import_tasks: managers.yml
+
 - name: Install Fish plugins
   tags:
       - fish
@@ -11,54 +27,43 @@
       - packages
   import_tasks: tmux.yml
 
-- name: Install Linuxbrew
-  tags:
-      - packages
-      - brew
-      - homebrew
-      - linuxbrew
-  import_tasks: linuxbrew.yml
-
-- name: Install packages & other software
-  tags:
-      - packages
-  import_tasks: managers.yml
-
-- name: Update fisher plugins
-  when: fisher_stat is changed
-  command: '{{ linuxbrew_fish }} -c fisher'
-
 - name: Install Rust
+  when: install_rust|bool
   tags:
       - packages
       - rust
   import_tasks: rust.yml
 
 - name: Install Talisman (github.com/thoughtworks/talisman)
+  when: install_talisman|bool
   tags:
       - packages
       - talisman
   import_tasks: talisman.yml
 
 - name: Install hexd (github.com/FireyFly/hexd)
+  when: install_hexd|bool
   tags:
       - packages
       - hexd
   import_tasks: hexd.yml
 
 - name: Install pixd (github.com/FireyFly/pixd)
+  when: install_pixd|bool
   tags:
       - packages
       - pixd
   import_tasks: pixd.yml
 
 - name: Install dart-sass
+  when: install_sass|bool
   tags:
       - packages
       - sass
   import_tasks: sass.yml
 
 - name: Install TeX Live
+  when: install_tex|bool
   tags:
       - packages
       - tex

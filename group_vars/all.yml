@@ -1,5 +1,6 @@
 ---
 ansible_connection: local
+user: '{{ ansible_hostname }}'
 
 local_prefix: /usr/local
 
@@ -29,62 +30,69 @@ dotfiles:
 
 symlinks: []
 
-apt_packages:
+apt_packages_skip: []
+apt_packages_extra: []
+
+apt_packages_essential:
       # editors
-    - vim
-    - vim-gtk
     - neovim
       # shell utilities / dev tools
-    - linuxbrew-wrapper
     - build-essential
     - tmux
-    - shellcheck
     - silversearcher-ag
     - colordiff
-    - cloc
-    - ghostscript
-    - imagemagick
-    - graphviz
-    - hugo
+    - colortest
+    - source-highlight
     - pandoc
     - sshfs
     - lftp
-    - colortest
-    - source-highlight
-    - toilet  # command-line ascii art generator
-    #- reptyer
-    #- pdftk
       # git
     - git
     - git-hub
     - git-lfs
-    - gitk
       # programming languages
-    - ghc
     - openjdk-11-jdk
     - ruby
     - ruby-dev
-    - perl
     - nodejs
     - npm
+
+apt_packages:
+      # editors
+    - vim
+    - vim-gtk
+      # shell utilities / dev tools
+    - linuxbrew-wrapper
+    - shellcheck
+    - cloc
+    - ghostscript
+    - imagemagick
+    - graphviz
+    - toilet  # command-line ascii art generator
+    #- reptyer
+    #- pdftk
+      # git
+    - gitk
+      # programming languages
+    - ghc
+    - perl
     - golang
 
+install_homebrew: true
 homebrew_root: /home/linuxbrew/.linuxbrew
 homebrew_bin: '{{ homebrew_root }}/Homebrew/bin/brew'
 homebrew_bin_dir: '{{ homebrew_root }}/bin'
 homebrew_packages:
     - git-credential-manager
-    - hub
     - fish
     - python
     - fzf
-    # - sass/sass/sass
     - jq
+homebrew_packages_extra: []
 
 homebrew_links:
     - git-credential-manager
     - fish
-    - hub
     - python3
     - python3.7
     - pip3
@@ -125,6 +133,7 @@ ruby_gems:
     - uniscribe
 
 # node_packages
+npm_bin: /usr/bin/npm
 npm_packages:
     - neovim
     - typescript
@@ -146,6 +155,7 @@ vimfiles:
     repo: https://github.com/9999years/vimfiles.git
     dest: ~/.vim
 
+install_rust: true
 rustup_arch: x86_64-unknown-linux-gnu
 rustup_url: https://static.rust-lang.org/rustup/dist/{{ rustup_arch }}/rustup-init
 cargo_bin: '{{ ansible_user_dir }}/.cargo/bin/cargo'
@@ -157,12 +167,14 @@ fisher: '{{ ansible_user_dir }}/.config/fish/functions/fisher.fish'
 
 homebrew_install: https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
 
+install_talisman: true
 talisman_url: https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash
 pre_commit_tpl: '{{ ansible_user_dir }}/.git-template/hooks/pre-commit'
 
 tpm: '{{ ansible_user_dir }}/.tmux/plugins/tpm'
 tpm_url: https://github.com/tmux-plugins/tpm
 
+install_sass: true
 sass_version: 1.20.2
 sass_arch: linux-x64
 sass_url: https://github.com/sass/dart-sass/releases/download/
@@ -174,3 +186,7 @@ sass_link_dir: '{{ local_prefix }}/bin'
 neovim_win_root: /mnt/c/tools/neovim/Neovim
 neovim_win_bin_dir: '{{ neovim_win_root }}/bin'
 neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'
+
+install_hexd: true
+install_pixd: true
+install_tex: true
