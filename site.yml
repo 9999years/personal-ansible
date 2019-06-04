@@ -1,5 +1,5 @@
 ---
 - name: Configure Linux
-  hosts: localhost
+  hosts: all
   roles:
           - linux

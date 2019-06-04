@@ -1,14 +1,14 @@
 ---
 - name: Install Fish plugins
   tags:
-          - fish
-          - packages
+      - fish
+      - packages
   import_tasks: fish.yml
 
 - name: Install Tmux plugins
   tags:
-          - tmux
-          - packages
+      - tmux
+      - packages
   import_tasks: tmux.yml
 
 - name: Install Linuxbrew
@@ -21,7 +21,7 @@
 
 - name: Install packages & other software
   tags:
-          - packages
+      - packages
   import_tasks: managers.yml
 
 - name: Update fisher plugins
@@ -30,8 +30,8 @@
 
 - name: Install Rust
   tags:
-          - packages
-          - rust
+      - packages
+      - rust
   import_tasks: rust.yml
 
 - name: Install Talisman (github.com/thoughtworks/talisman)
@@ -64,4 +64,4 @@
       - tex
   become: true
   apt:
-          package: texlive
+      package: texlive

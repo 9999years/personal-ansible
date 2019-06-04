@@ -17,3 +17,12 @@
   become: true
   command: chsh {{ ansible_user_id }}
         --shell {{ linuxbrew_fish }}
+
+- name: Link win32yank for Neovim
+  when: ansible_is_wsl
+  become: true
+  file:
+      path: '{{ local_prefix }}/bin/win32yank.exe'
+      src: '{{ neovim_win32yank }}'
+      type: link
+      mode: 0755

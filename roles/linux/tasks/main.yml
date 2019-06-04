@@ -1,4 +1,8 @@
 ---
+- name: Detect WSL
+  set_fact:
+    is_wsl: '{{ "WSL_DISTRO_NAME" in ansible_env }}'
+
 - name: Initial config
   tags:
           - config

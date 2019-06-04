@@ -1,5 +1,7 @@
 ---
-ansible_python_interpreter: /usr/bin/python3
+ansible_connection: local
+
+local_prefix: /usr/local
 
 dotfiles_repo:
     git: https://github.com/9999years/dotfiles.git
@@ -25,9 +27,7 @@ dotfiles:
     - .config/fish/functions
     - .config/fisher_local/fishfile
 
-symlinks:
-    - from: '{{ ansible_user_dir }}/.config/alacritty/alacritty.yml'
-      to: /mnt/c/Users/arvensis/AppData/Roaming/alacritty/alacritty.yml
+symlinks: []
 
 apt_packages:
       # editors
@@ -51,6 +51,7 @@ apt_packages:
     - lftp
     - colortest
     - source-highlight
+    - toilet  # command-line ascii art generator
     #- reptyer
     #- pdftk
       # git
@@ -123,9 +124,13 @@ ruby_gems:
     - neovim
     - uniscribe
 
+# node_packages
 npm_packages:
     - neovim
     - typescript
+    - babel-cli
+    - webpack
+    - hexo-cli
 
 hub_version: 2.11.2
 hub_arch: linux-amd64
@@ -134,9 +139,8 @@ hub_url: https://github.com/github/hub/releases/download/v{{ hub_version -}}
         /{{ hub_top_dir }}.tgz
 
 gcm_version: 2.0.4
-gcm_gpg_ok: 'V4 RSA/SHA256 Signature, key ID ba34dbc2: OK'
-gcm_dest: '/usr/local/bin/git-credential-manager-{{ gcm_version }}.jar'
-gcm_shim_dest: '/usr/local/bin/git-credential-manager'
+gcm_dest: '{{ local_prefix }}/bin/git-credential-manager-{{ gcm_version }}.jar'
+gcm_shim_dest: '{{ local_prefix }}/bin/git-credential-manager'
 
 vimfiles:
     repo: https://github.com/9999years/vimfiles.git
@@ -147,7 +151,6 @@ rustup_url: https://static.rust-lang.org/rustup/dist/{{ rustup_arch }}/rustup-in
 cargo_bin: '{{ ansible_user_dir }}/.cargo/bin/cargo'
 
 fish_version: 3.0.2
-fish_repo: http://ppa.launchpad.net/fish-shell/release-3
 linuxbrew_fish: '{{ homebrew_bin_dir }}/fish'
 fisher_url: https://git.io/fisher
 fisher: '{{ ansible_user_dir }}/.config/fish/functions/fisher.fish'
@@ -164,6 +167,10 @@ sass_version: 1.20.2
 sass_arch: linux-x64
 sass_url: https://github.com/sass/dart-sass/releases/download/
     {{- sass_version }}/dart-sass-{{ sass_version }}-{{ sass_arch }}.tar.gz
-sass_dest: /usr/local/libexec
+sass_dest: '{{ local_prefix }}/libexec'
 sass_bin_dir: '{{ sass_dest }}/dart-sass'
-sass_link_dir: /usr/local/bin
+sass_link_dir: '{{ local_prefix }}/bin'
+
+neovim_win_root: /mnt/c/tools/neovim/Neovim
+neovim_win_bin_dir: '{{ neovim_win_root }}/bin'
+neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'

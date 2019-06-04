@@ -1,5 +1,6 @@
 ---
 - name: Give self passwordless sudo
+  when: ansible_is_wsl
   become: true
   template:
       src: sudoers.jinja2
@@ -7,6 +8,7 @@
       mode: 0440
 
 - name: Ensure umask 022 in /etc/profile
+  when: ansible_is_wsl
   become: true
   lineinfile:
       path: /etc/profile
@@ -49,4 +51,3 @@
       src: '{{ item.to }}'
       state: link
       force: true # clobber
-
