@@ -8,16 +8,16 @@
           - config
   import_tasks: init.yml
 
+- name: Install packages
+  tags:
+      - packages
+  import_tasks: packages/main.yml
+
 - name: Install Vim config
   tags:
           - config
           - vim
   import_tasks: vim.yml
-
-- name: Install packages
-  tags:
-      - packages
-  import_tasks: packages/main.yml
 
 - name: Perform final config
   tags:

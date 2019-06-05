@@ -11,13 +11,7 @@
   block:
       - name: Download GCM
         get_url:
-            url: https://github.com
-                {#-#}/Microsoft
-                {#-#}/Git-Credential-Manager-for-Mac-and-Linux
-                {#-#}/releases
-                {#-#}/download
-                {#-#}/git-credential-manager-{{ gcm_version }}
-                {#-#}/git-credential-manager-{{ gcm_version }}.jar
+            url: '{{ gcm_url }}'
             dest: '{{ gcm_dest }}'
 
       - name: Add GCM shim

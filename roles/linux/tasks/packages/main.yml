@@ -1,11 +1,32 @@
 ---
-- name: Install Linuxbrew
+- name: Bootstrap Git-Credential-Manager (github.com/microsoft/Git-Credential-Manager-for-Mac-and-Linux)
+  tags:
+      - package
+      - gcm
+  when: bootstrap_gcm|bool
+  import_tasks: gcm.yml
+
+- name: Install Linuxbrew  # BSD 2-clause
   tags:
       - packages
       - brew
       - homebrew
       - linuxbrew
   import_tasks: linuxbrew.yml
+
+- name: Bootstrap pip
+  when: bootstrap_pip|bool
+  tags:
+      - pip
+      - packages
+  import_tasks: bootstrap_pip.yml
+
+- name: Bootstrap npm
+  when: bootstrap_npm|bool
+  tags:
+      - packages
+      - npm
+  import_tasks: bootstrap_npm.yml
 
 - name: Install packages & other software
   tags:
@@ -27,28 +48,28 @@
       - packages
   import_tasks: tmux.yml
 
-- name: Install Rust
+- name: Install Rust  # Apache 2.0 & MIT (dual-licensed)
   when: install_rust|bool
   tags:
       - packages
       - rust
   import_tasks: rust.yml
 
-- name: Install Talisman (github.com/thoughtworks/talisman)
+- name: Install Talisman (github.com/thoughtworks/talisman)  # MIT
   when: install_talisman|bool
   tags:
       - packages
       - talisman
   import_tasks: talisman.yml
 
-- name: Install hexd (github.com/FireyFly/hexd)
+- name: Install hexd (github.com/FireyFly/hexd)  # MIT
   when: install_hexd|bool
   tags:
       - packages
       - hexd
   import_tasks: hexd.yml
 
-- name: Install pixd (github.com/FireyFly/pixd)
+- name: Install pixd (github.com/FireyFly/pixd)  # MIT
   when: install_pixd|bool
   tags:
       - packages

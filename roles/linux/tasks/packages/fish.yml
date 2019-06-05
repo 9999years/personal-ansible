@@ -13,4 +13,4 @@
 
 - name: Update fisher plugins
   when: fisher_stat is changed
-  command: '{{ linuxbrew_fish }} -c fisher'
+  command: '{{ fish_bin }} -c fisher'
