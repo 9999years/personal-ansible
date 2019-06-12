@@ -8,24 +8,27 @@
       update: false
   register: dotfiles_clone
 
-- name: Create dotfile directories
+- name: Create dotfiles directories
   become: true
   become_user: '{{ user }}'
-  loop: '{{ dotfiles }}'
-  when: "'/' in item"
+  loop: '{{ dotfiles + dotfiles_extra }}'
+  when: "'/' in item and item not in dotfiles_skip"
   file:
-          path: '{{ ansible_user_dir }}/{{ item|dirname }}'
-          state: directory
+      path: '{{ ansible_user_dir }}/{{ item|dirname }}'
+      state: directory
+      owner: '{{ user }}'
 
 - name: Link dotfiles
   become: true
   become_user: '{{ user }}'
-  loop: '{{ dotfiles }}'
+  loop: '{{ dotfiles + dotfiles_extra }}'
+  when: item not in dotfiles_skip
   file:
       path: '{{ ansible_user_dir }}/{{ item }}'
       src: '{{ dotfiles_repo.dest }}/{{ item }}'
       state: link
       force: true # clobber
+      owner: '{{ user }}'
 
 - name: Create other links
   become: true
@@ -51,7 +54,7 @@
       line: '{{ fish_bin }}'
 
 - name: Change shell to {{ chsh_shell }}
-  when: brew_fish is changed
+  when: brew_fish is changed and chsh|bool
   become: true
   command: '{{ chsh_bin }} {{ chsh_shell }}'
 

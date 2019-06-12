@@ -1,0 +1,45 @@
+---
+- name: Check for cargo deb
+  stat:
+      path: '{{ deb_bin }}'
+  register: deb_stat
+  changed_when: not (deb_stat.stat.exists
+    and deb_stat.stat.executable)
+
+- name: Install cargo deb
+  when: deb_stat is changed
+  command: cargo install cargo-deb
+
+- name: Check for alacritty
+  stat:
+      path: '{{ alacritty_bin }}'
+  register: alacritty_stat
+  changed_when: not (alacritty_stat.stat.exists
+    and alacritty_stat.stat.executable)
+
+- name: Install alacritty
+  when: alacritty_stat is changed
+  block:
+      - name: Create temporary directory
+        tempfile:
+            state: directory
+        register: alacritty_dir
+
+      - name: Clone alacritty
+        git:
+            force: true
+            repo: '{{ alacritty_url }}'
+            dest: '{{ alacritty_dir.path }}'
+
+      - name: Build alacritty
+        command: >-
+            {{ cargo_bin }} deb
+            --install
+            --manifest-path alacritty/Cargo.toml
+        args:
+            chdir: '{{ alacritty_dir.path }}'
+
+      - name: Delete temporary directory
+        file:
+            state: absent
+            path: '{{ alacritty_dir.path }}'

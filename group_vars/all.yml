@@ -27,6 +27,8 @@ dotfiles:
     - .config/fish/config.fish
     - .config/fish/functions
     - .config/fisher_local/fishfile
+dotfiles_skip: []
+dotfiles_extra: []
 
 symlinks: []
 
@@ -152,6 +154,7 @@ npm_ext: .tar.xz
 npm_url: https://nodejs.org/dist/{{ npm_version -}}
             /node-{{ npm_version }}-{{ npm_arch }}{{ npm_ext}}
 
+install_hub: false
 hub_version: 2.11.2
 hub_arch: linux-amd64
 hub_top_dir: hub-{{ hub_arch }}-{{ hub_version}}
@@ -209,5 +212,9 @@ bootstrap_pip: false
 bootstrap_pip_url: https://bootstrap.pypa.io/get-pip.py
 python_bin: '{{ local_prefix }}/bin/python3.7'
 
+chsh: true
 chsh_shell: '{{ fish_bin }}'
 chsh_bin: chsh {{ ansible_user_id }} --shell
+
+install_alacritty: false
+alacritty_url: https://github.com/jwilm/alacritty.git

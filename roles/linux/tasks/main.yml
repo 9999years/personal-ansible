@@ -1,11 +1,13 @@
 ---
 - name: Detect WSL
+  tags:
+      - config
   set_fact:
     is_wsl: '{{ "WSL_DISTRO_NAME" in ansible_env }}'
 
 - name: Initial config
   tags:
-          - config
+      - config
   import_tasks: init.yml
 
 - name: Install packages
@@ -15,11 +17,12 @@
 
 - name: Install Vim config
   tags:
-          - config
-          - vim
+      - config
+      - vim
   import_tasks: vim.yml
 
 - name: Perform final config
   tags:
       - config
+      - final_config
   import_tasks: config.yml

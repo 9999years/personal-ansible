@@ -1,5 +1,5 @@
 ---
-# included by packages.yml
+# included by hub.yml
 - name: Ensure /usr/local/{{ hub_file|dirname }} exists
   become: true
   when: "'/' in hub_file"
