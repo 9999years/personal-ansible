@@ -1,5 +1,6 @@
 ---
 ansible_connection: local
+user: '{{ ansible_hostname }}'
 
 local_prefix: /usr/local
 
@@ -29,67 +30,77 @@ dotfiles:
 
 symlinks: []
 
+apt_packages_skip: []
+apt_packages_extra: []
+
+apt_packages_essential:
+      # editors
+    - neovim  # Apache 2.0
+      # shell utilities / dev tools
+    - build-essential
+    - tmux  # ISC License
+    - silversearcher-ag  # Apache 2.0
+    - colordiff  # GPL v3
+    - colortest
+    - source-highlight  # GPL v3
+    - pandoc  # GLP v2+ & BSD 3-clause & MIT & WTFPL (dzslides)
+    - sshfs  # GPL v2
+    - lftp  # GPL v3+
+      # git
+    - git  # GPL v2
+    - git-hub  # MIT
+    - git-lfs  # MIT
+      # programming languages
+    - openjdk-11-jdk  # GPL v2
+    - ruby  # BDS 2-clause
+    - ruby-dev
+    - nodejs  # MIT
+    - npm  # Artistic License 2.0
+
 apt_packages:
       # editors
-    - vim
+    - vim  # GPL-compatible
     - vim-gtk
-    - neovim
       # shell utilities / dev tools
     - linuxbrew-wrapper
-    - build-essential
-    - tmux
-    - shellcheck
-    - silversearcher-ag
-    - colordiff
-    - cloc
+    - shellcheck  # GPL v3
+    - cloc  # GPL v2 & Artistic License
     - ghostscript
-    - imagemagick
-    - graphviz
-    - hugo
-    - pandoc
-    - sshfs
-    - lftp
-    - colortest
-    - source-highlight
+    - imagemagick  # Derived Apache 2.0
+    - graphviz  # CPL 1.0
     - toilet  # command-line ascii art generator
     #- reptyer
     #- pdftk
       # git
-    - git
-    - git-hub
-    - git-lfs
     - gitk
       # programming languages
     - ghc
-    - openjdk-11-jdk
-    - ruby
-    - ruby-dev
     - perl
-    - nodejs
-    - npm
     - golang
 
+
+install_homebrew: true
+homebrew_install: https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
 homebrew_root: /home/linuxbrew/.linuxbrew
 homebrew_bin: '{{ homebrew_root }}/Homebrew/bin/brew'
 homebrew_bin_dir: '{{ homebrew_root }}/bin'
 homebrew_packages:
-    - git-credential-manager
-    - hub
-    - fish
-    - python
-    - fzf
-    # - sass/sass/sass
-    - jq
+    - git-credential-manager  # MIT
+    - fish  # GPL v2 & LGPL v2, OpenBSD License, ISC, NetBSD
+    - python  # GPL-compatible PSF; https://docs.python.org/3/license.html
+    - fzf  # MIT
+    - jq  # MIT
+homebrew_packages_extra: []
 
 homebrew_links:
     - git-credential-manager
     - fish
-    - hub
     - python3
     - python3.7
     - pip3
     - pip3.7
 
+pip_bin: '{{ homebrew_bin_dir }}/pip3'
 pip_packages:
     - atomicwrites
     - attrs
@@ -121,16 +132,25 @@ pip_packages:
     - mypy
 
 ruby_gems:
-    - neovim
-    - uniscribe
+    - neovim  # MIT
+    - uniscribe  # MIT
 
 # node_packages
 npm_packages:
-    - neovim
-    - typescript
-    - babel-cli
-    - webpack
-    - hexo-cli
+    - neovim  # MIT
+    - typescript  # Apache 2.0
+    - babel-cli  # MIT
+    - webpack  # MIT
+    - hexo-cli  # MIT
+
+bootstrap_npm: false
+npm_install_become: false
+npm_bin: /usr/bin/npm
+npm_version: v10.16.0
+npm_arch: linux-x64
+npm_ext: .tar.xz
+npm_url: https://nodejs.org/dist/{{ npm_version -}}
+            /node-{{ npm_version }}-{{ npm_arch }}{{ npm_ext}}
 
 hub_version: 2.11.2
 hub_arch: linux-amd64
@@ -138,31 +158,37 @@ hub_top_dir: hub-{{ hub_arch }}-{{ hub_version}}
 hub_url: https://github.com/github/hub/releases/download/v{{ hub_version -}}
         /{{ hub_top_dir }}.tgz
 
+bootstrap_gcm: false
 gcm_version: 2.0.4
 gcm_dest: '{{ local_prefix }}/bin/git-credential-manager-{{ gcm_version }}.jar'
 gcm_shim_dest: '{{ local_prefix }}/bin/git-credential-manager'
+gcm_url: >-
+    https://github.com/Microsoft/Git-Credential-Manager-for-Mac-and-Linux
+    {#-#}/releases/download/git-credential-manager-{{ gcm_version -}}
+    /git-credential-manager-{{ gcm_version }}.jar
 
 vimfiles:
     repo: https://github.com/9999years/vimfiles.git
     dest: ~/.vim
 
+install_rust: true
 rustup_arch: x86_64-unknown-linux-gnu
 rustup_url: https://static.rust-lang.org/rustup/dist/{{ rustup_arch }}/rustup-init
 cargo_bin: '{{ ansible_user_dir }}/.cargo/bin/cargo'
 
 fish_version: 3.0.2
-linuxbrew_fish: '{{ homebrew_bin_dir }}/fish'
+fish_bin: '{{ homebrew_bin_dir }}/fish'
 fisher_url: https://git.io/fisher
 fisher: '{{ ansible_user_dir }}/.config/fish/functions/fisher.fish'
 
-homebrew_install: https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
-
+install_talisman: true
 talisman_url: https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash
 pre_commit_tpl: '{{ ansible_user_dir }}/.git-template/hooks/pre-commit'
 
 tpm: '{{ ansible_user_dir }}/.tmux/plugins/tpm'
 tpm_url: https://github.com/tmux-plugins/tpm
 
+install_sass: true
 sass_version: 1.20.2
 sass_arch: linux-x64
 sass_url: https://github.com/sass/dart-sass/releases/download/
@@ -174,3 +200,14 @@ sass_link_dir: '{{ local_prefix }}/bin'
 neovim_win_root: /mnt/c/tools/neovim/Neovim
 neovim_win_bin_dir: '{{ neovim_win_root }}/bin'
 neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'
+
+install_hexd: true
+install_pixd: true
+install_tex: true
+
+bootstrap_pip: false
+bootstrap_pip_url: https://bootstrap.pypa.io/get-pip.py
+python_bin: '{{ local_prefix }}/bin/python3.7'
+
+chsh_shell: '{{ fish_bin }}'
+chsh_bin: chsh {{ ansible_user_id }} --shell

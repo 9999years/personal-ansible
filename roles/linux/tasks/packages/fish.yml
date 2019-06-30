@@ -11,6 +11,6 @@
       url: '{{ fisher_url }}'
       dest: '{{ fisher }}'
 
-- name: Install fisher plugins
+- name: Update fisher plugins
   when: fisher_stat is changed
-  command: fish -c fisher
+  command: '{{ fish_bin }} -c fisher'

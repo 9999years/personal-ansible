@@ -1,7 +1,45 @@
 ---
+- name: Clone dotfiles
+  become: true
+  become_user: '{{ user }}'
+  git:
+      repo: '{{ dotfiles_repo.git }}'
+      dest: '{{ dotfiles_repo.dest }}'
+      update: false
+  register: dotfiles_clone
+
+- name: Create dotfile directories
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ dotfiles }}'
+  when: "'/' in item"
+  file:
+          path: '{{ ansible_user_dir }}/{{ item|dirname }}'
+          state: directory
+
+- name: Link dotfiles
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ dotfiles }}'
+  file:
+      path: '{{ ansible_user_dir }}/{{ item }}'
+      src: '{{ dotfiles_repo.dest }}/{{ item }}'
+      state: link
+      force: true # clobber
+
+- name: Create other links
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ symlinks }}'
+  file:
+      path: '{{ item.from }}'
+      src: '{{ item.to }}'
+      state: link
+      force: true # clobber
+
 - name: Check for Linuxbrew fish
   stat:
-      path: '{{ linuxbrew_fish }}'
+      path: '{{ fish_bin }}'
   register: brew_fish
   changed_when: brew_fish.stat.exists and brew_fish.stat.executable
 
@@ -10,13 +48,12 @@
   become: true
   lineinfile:
       path: /etc/shells
-      line: '{{ linuxbrew_fish }}'
+      line: '{{ fish_bin }}'
 
-- name: chsh fish
+- name: Change shell to {{ chsh_shell }}
   when: brew_fish is changed
   become: true
-  command: chsh {{ ansible_user_id }}
-        --shell {{ linuxbrew_fish }}
+  command: '{{ chsh_bin }} {{ chsh_shell }}'
 
 - name: Link win32yank for Neovim
   when: is_wsl|bool
