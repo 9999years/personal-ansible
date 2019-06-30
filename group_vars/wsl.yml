@@ -1,0 +1,4 @@
+---
+symlinks:
+    - from: '{{ ansible_user_dir }}/.config/alacritty/alacritty.yml'
+      to: /mnt/c/Users/arvensis/AppData/Roaming/alacritty/alacritty.yml

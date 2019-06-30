@@ -19,10 +19,10 @@
         --shell {{ linuxbrew_fish }}
 
 - name: Link win32yank for Neovim
-  when: ansible_is_wsl
+  when: is_wsl|bool
   become: true
   file:
       path: '{{ local_prefix }}/bin/win32yank.exe'
       src: '{{ neovim_win32yank }}'
-      type: link
+      state: link
       mode: 0755
