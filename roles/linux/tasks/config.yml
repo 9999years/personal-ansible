@@ -64,5 +64,5 @@
   file:
       path: '{{ local_prefix }}/bin/win32yank.exe'
       src: '{{ neovim_win32yank }}'
-      type: link
+      state: link
       mode: 0755
