@@ -48,7 +48,6 @@ apt_packages_essential:
     - lftp  # GPL v3+
       # git
     - git  # GPL v2
-    - git-hub  # MIT
     - git-lfs  # MIT
       # programming languages
     - openjdk-11-jdk  # GPL v2
@@ -142,9 +141,11 @@ npm_packages:
     - babel-cli  # MIT
     - webpack  # MIT
     - hexo-cli  # MIT
+    - yarn
+    - prettier
 
 bootstrap_npm: false
-npm_install_become: false
+npm_install_become: true
 npm_bin: /usr/bin/npm
 npm_version: v10.16.0
 npm_arch: linux-x64
@@ -152,6 +153,7 @@ npm_ext: .tar.xz
 npm_url: https://nodejs.org/dist/{{ npm_version -}}
             /node-{{ npm_version }}-{{ npm_arch }}{{ npm_ext}}
 
+install_hub: true
 hub_version: 2.11.2
 hub_arch: linux-amd64
 hub_top_dir: hub-{{ hub_arch }}-{{ hub_version}}
@@ -174,12 +176,14 @@ vimfiles:
 install_rust: true
 rustup_arch: x86_64-unknown-linux-gnu
 rustup_url: https://static.rust-lang.org/rustup/dist/{{ rustup_arch }}/rustup-init
-cargo_bin: '{{ ansible_user_dir }}/.cargo/bin/cargo'
+cargo_bin_dir: '{{ ansible_user_dir }}/.cargo/bin'
+cargo_bin: '{{ cargo_bin_dir }}/cargo'
 
 fish_version: 3.0.2
 fish_bin: '{{ homebrew_bin_dir }}/fish'
 fisher_url: https://git.io/fisher
-fisher: '{{ ansible_user_dir }}/.config/fish/functions/fisher.fish'
+fisher_dir: '{{ ansible_user_dir }}/.config/fish/functions'
+fisher: '{{ fisher_dir }}/fisher.fish'
 
 install_talisman: true
 talisman_url: https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash
@@ -203,7 +207,13 @@ neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'
 
 install_hexd: true
 install_pixd: true
-install_tex: true
+install_tex_live: false
+
+install_miktex: true
+miktex_gpg_key: D6BC243565B2087BC3F897C9277A7293F59E4889
+miktex_apt_repo: deb http://miktex.org/download/ubuntu bionic universe
+miktex_mpm_bin: /usr/bin/mpm
+miktex_local_root: '{{ ansible_user_dir }}/.texmf'
 
 bootstrap_pip: false
 bootstrap_pip_url: https://bootstrap.pypa.io/get-pip.py

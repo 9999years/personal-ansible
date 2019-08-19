@@ -19,12 +19,6 @@
             dest: '{{ tmpdir.path }}'
 
       - name: Build hexd
-        command: make
-        args:
-            chdir: '{{ tmpdir.path }}'
-
-      - name: Install hexd
-        become: true
-        command: make install
+        command: 'make && make install'
         args:
             chdir: '{{ tmpdir.path }}'

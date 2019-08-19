@@ -30,4 +30,4 @@
 
 - name: Upgrade Rust
   when: rust_check is not changed
-  command: rustup update
+  command: '{{ cargo_bin_dir }}/rustup update'

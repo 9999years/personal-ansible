@@ -1,5 +1,9 @@
 ---
 - name: Detect WSL
+  tags:
+          - config
+          - vim
+          - packages
   set_fact:
     is_wsl: '{{ "WSL_DISTRO_NAME" in ansible_env }}'
 

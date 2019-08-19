@@ -27,6 +27,14 @@
       state: link
       force: true # clobber
 
+- name: Ensure dirs exist for other links
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ symlinks }}'
+  file:
+      path: '{{ item.from|dirname }}'
+      state: directory
+
 - name: Create other links
   become: true
   become_user: '{{ user }}'

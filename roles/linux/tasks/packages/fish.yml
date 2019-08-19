@@ -5,6 +5,12 @@
           path: '{{ fisher }}'
   changed_when: not fisher_stat.stat.exists
 
+- name: Ensure fisher path exists
+  when: fisher_stat is changed
+  file:
+          path: '{{ fisher_dir }}'
+          state: directory
+
 - name: Install fisher (github.com/jorgebucaran/fisher)
   when: fisher_stat is changed
   get_url:

@@ -1,4 +1,14 @@
 ---
+- name: Install GitHub Hub
+  tags:
+    - package
+    - hub
+    - git
+    - github
+  when: install_hub|bool
+  become: true
+  import_tasks: hub.yml
+
 - name: Bootstrap Git-Credential-Manager (github.com/microsoft/Git-Credential-Manager-for-Mac-and-Linux)
   tags:
       - package
@@ -84,10 +94,17 @@
   import_tasks: sass.yml
 
 - name: Install TeX Live
-  when: install_tex|bool
+  when: install_tex_live|bool
   tags:
       - packages
       - tex
   become: true
   apt:
       package: texlive
+
+- name: Install MikTeX
+  when: install_miktex|bool
+  tags:
+      - packages
+      - tex
+  import_tasks: miktex.yml
