@@ -1,0 +1,40 @@
+---
+- name: Check for MikTeX mpm
+  stat:
+    path: '{{ miktex_mpm_bin }}'
+  register: mpm_stat
+  changed_when: not mpm_stat.stat.exists
+
+- name: Install MikTeX
+  when: mpm_stat is changed
+  block:
+    - name: Register MikTeX GPG key
+      become: true
+      command: apt-key adv
+            --keyserver hkp://keyserver.ubuntu.com:80
+            --recv-keys {{ miktex_gpg_key }}
+      failed_when: false
+
+    - name: Register MikTeX repo
+      become: true
+      apt_repository:
+          filename: miktex
+          repo: '{{ miktex_apt_repo }}'
+
+    - name: Install MikTeX
+      become: true
+      apt:
+          package: miktex
+
+    - name: Create local root directory
+      file:
+        path: '{{ miktex_local_root }}'
+        state: directory
+
+    - name: Install basic MikTeX packages
+      become: true
+      shell: >
+        {{ miktex_mpm_bin }} --admin --package-level=basic --upgrade
+        && initexmf --admin --register-root={{ miktex_local_root|quote }}
+        && initexmf --admin --update-fndb
+

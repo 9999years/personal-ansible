@@ -31,3 +31,6 @@
 - name: Upgrade Rust
   when: rust_check is not changed
   command: '{{ cargo_bin_dir }}/rustup update'
+
+- name: Install rust-analyzer
+  import_tasks: rust-analyzer.yml
