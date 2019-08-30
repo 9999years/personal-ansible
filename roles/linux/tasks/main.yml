@@ -3,7 +3,7 @@
   tags:
       - config
   set_fact:
-    is_wsl: '{{ "WSL_DISTRO_NAME" in ansible_env }}'
+    is_wsl: '{{ "Microsoft" in lookup("file", "/proc/version") }}'
 
 - name: Initial config
   tags:
