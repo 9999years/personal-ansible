@@ -1,35 +1,4 @@
 ---
-- name: Clone dotfiles
-  become: true
-  become_user: '{{ user }}'
-  git:
-      repo: '{{ dotfiles_repo.git }}'
-      dest: '{{ dotfiles_repo.dest }}'
-      update: false
-  register: dotfiles_clone
-
-- name: Create dotfiles directories
-  become: true
-  become_user: '{{ user }}'
-  loop: '{{ dotfiles + dotfiles_extra }}'
-  when: "'/' in item and item not in dotfiles_skip"
-  file:
-      path: '{{ ansible_user_dir }}/{{ item|dirname }}'
-      state: directory
-      owner: '{{ user }}'
-
-- name: Link dotfiles
-  become: true
-  become_user: '{{ user }}'
-  loop: '{{ dotfiles + dotfiles_extra }}'
-  when: item not in dotfiles_skip
-  file:
-      path: '{{ ansible_user_dir }}/{{ item }}'
-      src: '{{ dotfiles_repo.dest }}/{{ item }}'
-      state: link
-      force: true # clobber
-      owner: '{{ user }}'
-
 - name: Create other links
   become: true
   become_user: '{{ user }}'
@@ -38,7 +7,7 @@
       path: '{{ item.from }}'
       src: '{{ item.to }}'
       state: link
-      force: true # clobber
+      force: true  # clobber
 
 - name: Check for Linuxbrew fish
   stat:

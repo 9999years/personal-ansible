@@ -10,16 +10,29 @@
       - config
   import_tasks: init.yml
 
-- name: Install packages
+- name: Bootstrap Git-Credential-Manager (github.com/microsoft/Git-Credential-Manager-for-Mac-and-Linux)
   tags:
       - packages
-  import_tasks: packages/main.yml
+      - gcm
+  when: bootstrap_gcm|bool
+  import_tasks: packages/gcm.yml
+
+- name: Clone / setup dotfiles
+  tags:
+      - config
+      - dotfiles
+  import_tasks: dotfiles.yml
 
 - name: Install Vim config
   tags:
       - config
       - vim
   import_tasks: vim.yml
+
+- name: Install packages
+  tags:
+      - packages
+  import_tasks: packages/main.yml
 
 - name: Perform final config
   tags:

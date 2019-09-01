@@ -43,3 +43,10 @@
         file:
             state: absent
             path: '{{ alacritty_dir.path }}'
+
+      - name: Create config directory
+        become: true
+        become_user: '{{ user }}'
+        file:
+          state: directory
+          path: '{{ ansible_user_dir }}/.config/alacritty'

@@ -172,7 +172,8 @@ gcm_url: >-
 
 vimfiles:
     repo: https://github.com/9999years/vimfiles.git
-    dest: ~/.vim
+    dest: '{{ ansible_user_dir }}/.config/nvim'
+    orig_dest: '{{ ansible_user_dir }}/.vim'
 
 install_rust: true
 rustup_arch: x86_64-unknown-linux-gnu
