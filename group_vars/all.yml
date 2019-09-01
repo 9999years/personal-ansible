@@ -50,7 +50,6 @@ apt_packages_essential:
     - lftp  # GPL v3+
       # git
     - git  # GPL v2
-    - git-hub  # MIT
     - git-lfs  # MIT
       # programming languages
     - openjdk-11-jdk  # GPL v2
@@ -92,6 +91,7 @@ homebrew_packages:
     - python  # GPL-compatible PSF; https://docs.python.org/3/license.html
     - fzf  # MIT
     - jq  # MIT
+    - brew  # MIT
 homebrew_packages_extra: []
 
 homebrew_links:
