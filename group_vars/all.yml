@@ -91,7 +91,7 @@ homebrew_packages:
     - python  # GPL-compatible PSF; https://docs.python.org/3/license.html
     - fzf  # MIT
     - jq  # MIT
-    - brew  # MIT
+    - hub  # MIT
 homebrew_packages_extra: []
 
 homebrew_links:
@@ -161,7 +161,11 @@ hub_top_dir: hub-{{ hub_arch }}-{{ hub_version}}
 hub_url: https://github.com/github/hub/releases/download/v{{ hub_version -}}
         /{{ hub_top_dir }}.tgz
 
-bootstrap_gcm: false
+# use gcm during the dotfiles and vimfiles git repo cloning?
+bootstrap_gcm: true
+
+# install gcm separately
+install_gcm: false
 gcm_version: 2.0.4
 gcm_dest: '{{ local_prefix }}/bin/git-credential-manager-{{ gcm_version }}.jar'
 gcm_shim_dest: '{{ local_prefix }}/bin/git-credential-manager'

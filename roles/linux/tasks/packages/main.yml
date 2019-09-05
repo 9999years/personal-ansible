@@ -3,7 +3,7 @@
   tags:
       - packages
       - gcm
-  when: bootstrap_gcm|bool
+  when: install_gcm|bool
   import_tasks: gcm.yml
 
 - name: Install GitHub hub (github.com/github/hub)

@@ -29,6 +29,13 @@
       - vim
   import_tasks: vim.yml
 
+- name: Uninstall Git-Credential-Manager
+  when: bootstrap_gcm|bool
+  become: true
+  file:
+      path: '{{ gcm_shim_dest }}'
+      state: absent
+
 - name: Install packages
   tags:
       - packages
