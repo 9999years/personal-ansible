@@ -1,0 +1,16 @@
+- name: Add MikTeX GPG key
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: 'D6BC243565B2087BC3F897C9277A7293F59E4889'
+
+- name: Add MikTeX repository
+  apt_repository:
+    repo: deb http://miktex.org/download/ubuntu bionic universe
+    filename: miktex
+
+- name: Install MikTeX
+  apt:
+    package: miktex
+
+- name: Upgrade to package-level {{ miktex_package_level }}
+  command: 'mpm --admin --upgrade --package-level={{ miktex_package_level }}'

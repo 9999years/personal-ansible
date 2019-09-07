@@ -1,5 +1,15 @@
 ---
+- name: Check for 'helper = "manager"' in .gitconfig
+  register: needs_gitconfig
+  command: >-
+    grep -E
+    '^\s+helper\s*=\s*[\'"]?manager[\'"]?$'
+    '{{ ansible_user_dir }}/.gitconfig'
+  changed_when: needs_gitconfig.rc == 1
+  failed_when: needs_gitconfig.rc not in [0, 1]
+
 - name: Use bootstrapping .gitconfig
+  when: needs_gitconfig is changed
   become: true
   become_user: '{{ user }}'
   copy:
@@ -16,6 +26,7 @@
   register: dotfiles_clone
 
 - name: Delete bootstrapping .gitconfig
+  when: needs_gitconfig is changed
   file:
       state: absent
       path: '{{ ansible_user_dir }}/.gitconfig'

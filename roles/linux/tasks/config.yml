@@ -35,3 +35,8 @@
       src: '{{ neovim_win32yank }}'
       state: link
       mode: 0755
+
+- name: Clean cache
+  file:
+      path: '{{ ansible_user_dir }}/.cache'
+      state: absent

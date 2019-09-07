@@ -92,6 +92,7 @@ homebrew_packages:
     - fzf  # MIT
     - jq  # MIT
     - hub  # MIT
+    - nvim
 homebrew_packages_extra: []
 
 homebrew_links:
@@ -211,7 +212,11 @@ neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'
 
 install_hexd: true
 install_pixd: true
-install_tex: true
+install_texlive: false
+install_miktex: true
+
+# Options: 'essential', 'basic', 'complete'
+miktex_package_level: basic
 
 bootstrap_pip: false
 bootstrap_pip_url: https://bootstrap.pypa.io/get-pip.py

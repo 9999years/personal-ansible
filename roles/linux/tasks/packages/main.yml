@@ -99,10 +99,18 @@
   import_tasks: alacritty.yml
 
 - name: Install TeX Live
-  when: install_tex|bool
+  when: install_texlive|bool
   tags:
       - packages
       - tex
   become: true
   apt:
       package: texlive
+
+- name: Install MikTeX
+  when: install_miktex|bool
+  tags:
+      - packages
+      - tex
+  become: true
+  import_tasks: miktex.yml
