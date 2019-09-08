@@ -30,11 +30,10 @@
 - name: Link win32yank for Neovim
   when: is_wsl|bool
   become: true
-  file:
-      path: '{{ local_prefix }}/bin/win32yank.exe'
-      src: '{{ neovim_win32yank }}'
-      state: link
-      mode: 0755
+  template:
+    src: win32yank.exe.jinja2
+    dest: '{{ local_prefix }}/bin/win32yank.exe'
+    mode: 0755
 
 - name: Clean cache
   file:

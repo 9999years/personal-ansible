@@ -1,10 +1,12 @@
 ---
 - name: Check for 'helper = "manager"' in .gitconfig
   register: needs_gitconfig
-  command: >-
-    grep -E
-    '^\s+helper\s*=\s*[\'"]?manager[\'"]?$'
-    '{{ ansible_user_dir }}/.gitconfig'
+  command:
+    argv:
+      - grep
+      - -E
+      - '^\s+helper\s*=\s*[''"]?manager[''"]?$'
+      - '{{ ansible_user_dir }}/.gitconfig'
   changed_when: needs_gitconfig.rc == 1
   failed_when: needs_gitconfig.rc not in [0, 1]
 

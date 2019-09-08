@@ -217,6 +217,7 @@ install_miktex: true
 
 # Options: 'essential', 'basic', 'complete'
 miktex_package_level: basic
+user_texmf_root: '{{ ansible_user_dir }}/.texmf/'
 
 bootstrap_pip: false
 bootstrap_pip_url: https://bootstrap.pypa.io/get-pip.py
@@ -228,3 +229,7 @@ chsh_bin: chsh {{ ansible_user_id }} --shell
 
 install_alacritty: false
 alacritty_url: https://github.com/jwilm/alacritty.git
+
+rebeccastyle_repo:
+    git: https://github.com/9999years/rebeccaessay
+    dest: '{{ ansible_user_dir }}/projects/rebeccastyle'
