@@ -93,6 +93,12 @@
       - sass
   import_tasks: sass.yml
 
+- name: Install fd
+  tags:
+    - packages
+    - fd
+  import_tasks: fd.yml
+
 - name: Install TeX Live
   when: install_tex_live|bool
   tags:
