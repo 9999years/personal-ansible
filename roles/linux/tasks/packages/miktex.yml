@@ -5,36 +5,51 @@
   register: mpm_stat
   changed_when: not mpm_stat.stat.exists
 
-- name: Install MikTeX
+- name: Install MikTeX from Aptitude
   when: mpm_stat is changed
   block:
-    - name: Register MikTeX GPG key
+    - name: Add MikTeX GPG key
       become: true
-      command: apt-key adv
-            --keyserver hkp://keyserver.ubuntu.com:80
-            --recv-keys {{ miktex_gpg_key }}
-      failed_when: false
+      apt_key:
+        keyserver: hkp://keyserver.ubuntu.com:80
+        id: '{{ miktex_gpg_key }}'
 
-    - name: Register MikTeX repo
+    - name: Add MikTeX repository
       become: true
       apt_repository:
-          filename: miktex
-          repo: '{{ miktex_apt_repo }}'
+        filename: miktex
+        repo: '{{ miktex_apt_repo }}'
 
     - name: Install MikTeX
       become: true
       apt:
-          package: miktex
+        package: miktex
 
-    - name: Create local root directory
-      file:
-        path: '{{ miktex_local_root }}'
-        state: directory
+    - name: Upgrade to package-level {{ miktex_package_level }}
+      command: 'mpm --admin --upgrade --package-level={{ miktex_package_level }}'
 
-    - name: Install basic MikTeX packages
-      become: true
-      shell: >
-        {{ miktex_mpm_bin }} --admin --package-level=basic --upgrade
-        && initexmf --admin --register-root={{ miktex_local_root|quote }}
-        && initexmf --admin --update-fndb
+- name: Create local root directory
+  file:
+    path: '{{ miktex_local_root }}'
+    state: directory
 
+- name: Clone rebeccastyle
+  git:
+    repo: '{{ rebeccastyle_repo.git }}'
+    dest: '{{ rebeccastyle_repo.dest }}'
+
+- name: Install rebeccastyle
+  command: make install
+  args:
+    chdir: '{{ rebeccastyle_repo.dest }}'
+
+- name: Register user TEXMF root {{ user_texmf_root }}
+  become: true
+  command: initexmf --admin --verbose --user-roots={{ user_texmf_root }}
+
+- name: Refresh FNDB (root)
+  become: true
+  command: initexmf --admin --verbose --update-fndb
+
+- name: Refresh FNDB (user)
+  command: initexmf --verbose --update-fndb

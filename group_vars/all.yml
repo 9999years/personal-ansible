@@ -27,6 +27,8 @@ dotfiles:
     - .config/fish/config.fish
     - .config/fish/functions
     - .config/fisher_local/fishfile
+dotfiles_skip: []
+dotfiles_extra: []
 
 symlinks: []
 
@@ -89,6 +91,8 @@ homebrew_packages:
     - python  # GPL-compatible PSF; https://docs.python.org/3/license.html
     - fzf  # MIT
     - jq  # MIT
+    - hub  # MIT
+    - nvim
 homebrew_packages_extra: []
 
 homebrew_links:
@@ -141,6 +145,7 @@ npm_packages:
     - babel-cli  # MIT
     - webpack  # MIT
     - hexo-cli  # MIT
+    - bash-language-server
     - yarn
     - prettier
 
@@ -156,14 +161,18 @@ npm_ext: .tar.xz
 npm_url: https://nodejs.org/dist/{{ npm_version -}}
             /node-{{ npm_version }}-{{ npm_arch }}{{ npm_ext}}
 
-install_hub: true
+install_hub: false
 hub_version: 2.11.2
 hub_arch: linux-amd64
 hub_top_dir: hub-{{ hub_arch }}-{{ hub_version}}
 hub_url: https://github.com/github/hub/releases/download/v{{ hub_version -}}
         /{{ hub_top_dir }}.tgz
 
-bootstrap_gcm: false
+# use gcm during the dotfiles and vimfiles git repo cloning?
+bootstrap_gcm: true
+
+# install gcm separately
+install_gcm: false
 gcm_version: 2.0.4
 gcm_dest: '{{ local_prefix }}/bin/git-credential-manager-{{ gcm_version }}.jar'
 gcm_shim_dest: '{{ local_prefix }}/bin/git-credential-manager'
@@ -174,7 +183,8 @@ gcm_url: >-
 
 vimfiles:
     repo: https://github.com/9999years/vimfiles.git
-    dest: ~/.vim
+    dest: '{{ ansible_user_dir }}/.config/nvim'
+    orig_dest: '{{ ansible_user_dir }}/.vim'
 
 install_rust: true
 rustup_arch: x86_64-unknown-linux-gnu
@@ -210,18 +220,23 @@ neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'
 
 install_hexd: true
 install_pixd: true
-install_tex_live: false
 
+install_texlive: false
 install_miktex: true
 miktex_gpg_key: D6BC243565B2087BC3F897C9277A7293F59E4889
 miktex_apt_repo: deb http://miktex.org/download/ubuntu bionic universe
 miktex_mpm_bin: /usr/bin/mpm
 miktex_local_root: '{{ ansible_user_dir }}/.texmf'
 
+# Options: 'essential', 'basic', 'complete'
+miktex_package_level: basic
+user_texmf_root: '{{ ansible_user_dir }}/.texmf/'
+
 bootstrap_pip: false
 bootstrap_pip_url: https://bootstrap.pypa.io/get-pip.py
 python_bin: '{{ local_prefix }}/bin/python3.7'
 
+chsh: true
 chsh_shell: '{{ fish_bin }}'
 chsh_bin: chsh {{ ansible_user_id }} --shell
 
@@ -229,3 +244,10 @@ fd_version: '7.3.0'
 fd_arch: amd64
 fd_url: https://github.com/sharkdp/fd/releases/download/v{{ fd_version }}/fd_{{ fd_version }}_{{ fd_arch }}.deb
 fd_bin: /usr/bin/fd
+
+install_alacritty: false
+alacritty_url: https://github.com/jwilm/alacritty.git
+
+rebeccastyle_repo:
+    git: https://github.com/9999years/rebeccaessay
+    dest: '{{ ansible_user_dir }}/projects/rebeccastyle'

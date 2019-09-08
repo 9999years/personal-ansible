@@ -1,4 +1,6 @@
 ---
-symlinks:
-    - from: '{{ ansible_user_dir }}/.config/alacritty/alacritty.yml'
-      to: /mnt/c/Users/{{ ansible_user }}/AppData/Roaming/alacritty/alacritty.yml
+# Extends: ./all.yml
+bootstrap_gcm: true
+# symlinks:
+#     - from: '{{ ansible_user_dir }}/.config/alacritty/alacritty.yml'
+#       to: /mnt/c/Users/arvensis/AppData/Roaming/alacritty/alacritty.yml

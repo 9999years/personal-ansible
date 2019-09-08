@@ -1,0 +1,56 @@
+---
+- name: Check for 'helper = "manager"' in .gitconfig
+  register: needs_gitconfig
+  command:
+    argv:
+      - grep
+      - -E
+      - '^\s+helper\s*=\s*[''"]?manager[''"]?$'
+      - '{{ ansible_user_dir }}/.gitconfig'
+  changed_when: needs_gitconfig.rc == 1
+  failed_when: needs_gitconfig.rc not in [0, 1]
+
+- name: Use bootstrapping .gitconfig
+  when: needs_gitconfig is changed
+  become: true
+  become_user: '{{ user }}'
+  copy:
+      src: bootstrap_gitconfig
+      dest: '{{ ansible_user_dir }}/.gitconfig'
+
+- name: Clone dotfiles
+  become: true
+  become_user: '{{ user }}'
+  git:
+      repo: '{{ dotfiles_repo.git }}'
+      dest: '{{ dotfiles_repo.dest }}'
+      update: false
+  register: dotfiles_clone
+
+- name: Delete bootstrapping .gitconfig
+  when: needs_gitconfig is changed
+  file:
+      state: absent
+      path: '{{ ansible_user_dir }}/.gitconfig'
+
+- name: Create dotfiles directories
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ dotfiles + dotfiles_extra }}'
+  when: "'/' in item and item not in dotfiles_skip"
+  file:
+      path: '{{ ansible_user_dir }}/{{ item|dirname }}'
+      state: directory
+      owner: '{{ user }}'
+
+- name: Link dotfiles
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ dotfiles + dotfiles_extra }}'
+  when: item not in dotfiles_skip
+  file:
+      path: '{{ ansible_user_dir }}/{{ item }}'
+      src: '{{ dotfiles_repo.dest }}/{{ item }}'
+      state: link
+      force: true # clobber
+      owner: '{{ user }}'

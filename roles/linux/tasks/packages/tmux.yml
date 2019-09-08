@@ -5,7 +5,8 @@
           dest: '{{ tpm }}'
 
 - name: Install Tmux plugins
-  when: clone_tpm is changed
+  # when: clone_tpm is changed
+  when: false
   shell: tmux new &
         tmux source "{{ ansible_user_dir }}/.tmux.conf"
         && {{ tpm }}/bin/install_plugins

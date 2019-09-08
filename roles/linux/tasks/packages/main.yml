@@ -1,5 +1,12 @@
 ---
-- name: Install GitHub Hub
+- name: Bootstrap Git-Credential-Manager (github.com/microsoft/Git-Credential-Manager-for-Mac-and-Linux)
+  tags:
+      - packages
+      - gcm
+  when: install_gcm|bool
+  import_tasks: gcm.yml
+
+- name: Install GitHub hub (github.com/github/hub)
   tags:
     - package
     - hub
@@ -9,12 +16,6 @@
   become: true
   import_tasks: hub.yml
 
-- name: Bootstrap Git-Credential-Manager (github.com/microsoft/Git-Credential-Manager-for-Mac-and-Linux)
-  tags:
-      - package
-      - gcm
-  when: bootstrap_gcm|bool
-  import_tasks: gcm.yml
 
 - name: Install Linuxbrew  # BSD 2-clause
   tags:
@@ -92,15 +93,22 @@
       - packages
       - sass
   import_tasks: sass.yml
-
 - name: Install fd
   tags:
     - packages
     - fd
   import_tasks: fd.yml
 
+- name: Install alacritty (github.com/jwilm/alacritty)
+  when: install_alacritty|bool
+  tags:
+      - packages
+      - gui
+      - alacritty
+  import_tasks: alacritty.yml
+
 - name: Install TeX Live
-  when: install_tex_live|bool
+  when: install_texlive|bool
   tags:
       - packages
       - tex

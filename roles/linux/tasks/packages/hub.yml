@@ -50,4 +50,3 @@
         file:
             path: '{{ tmp_hub.path }}'
             state: absent
-

@@ -1,29 +1,50 @@
 ---
 - name: Detect WSL
   tags:
-          - config
-          - vim
-          - packages
+      - config
+      - vim
+      - packages
   set_fact:
-    is_wsl: '{{ "WSL_DISTRO_NAME" in ansible_env }}'
+    is_wsl: '{{ "Microsoft" in lookup("file", "/proc/version") }}'
 
 - name: Initial config
   tags:
-          - config
+      - config
   import_tasks: init.yml
+
+- name: Bootstrap Git-Credential-Manager (github.com/microsoft/Git-Credential-Manager-for-Mac-and-Linux)
+  tags:
+      - packages
+      - gcm
+  when: bootstrap_gcm|bool
+  import_tasks: packages/gcm.yml
+
+- name: Clone / setup dotfiles
+  tags:
+      - config
+      - dotfiles
+  import_tasks: dotfiles.yml
+
+- name: Install Vim config
+  tags:
+      - config
+      - vim
+  import_tasks: vim.yml
+
+- name: Uninstall Git-Credential-Manager
+  when: bootstrap_gcm|bool
+  become: true
+  file:
+      path: '{{ gcm_shim_dest }}'
+      state: absent
 
 - name: Install packages
   tags:
       - packages
   import_tasks: packages/main.yml
 
-- name: Install Vim config
-  tags:
-          - config
-          - vim
-  import_tasks: vim.yml
-
 - name: Perform final config
   tags:
       - config
+      - final_config
   import_tasks: config.yml
