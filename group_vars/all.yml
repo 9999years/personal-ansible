@@ -145,6 +145,7 @@ npm_packages:
     - babel-cli  # MIT
     - webpack  # MIT
     - hexo-cli  # MIT
+    - bash-language-server
 
 bootstrap_npm: false
 npm_install_become: false
