@@ -1,50 +1,4 @@
 ---
-- name: Clone dotfiles
-  become: true
-  become_user: '{{ user }}'
-  git:
-      repo: '{{ dotfiles_repo.git }}'
-      dest: '{{ dotfiles_repo.dest }}'
-      update: false
-  register: dotfiles_clone
-
-- name: Create dotfile directories
-  become: true
-  become_user: '{{ user }}'
-  loop: '{{ dotfiles }}'
-  when: "'/' in item"
-  file:
-          path: '{{ ansible_user_dir }}/{{ item|dirname }}'
-          state: directory
-
-- name: Link dotfiles
-  become: true
-  become_user: '{{ user }}'
-  loop: '{{ dotfiles }}'
-  file:
-      path: '{{ ansible_user_dir }}/{{ item }}'
-      src: '{{ dotfiles_repo.dest }}/{{ item }}'
-      state: link
-      force: true # clobber
-
-- name: Ensure dirs exist for other links
-  become: true
-  become_user: '{{ user }}'
-  loop: '{{ symlinks }}'
-  file:
-      path: '{{ item.from|dirname }}'
-      state: directory
-
-- name: Create other links
-  become: true
-  become_user: '{{ user }}'
-  loop: '{{ symlinks }}'
-  file:
-      path: '{{ item.from }}'
-      src: '{{ item.to }}'
-      state: link
-      force: true # clobber
-
 - name: Check for Linuxbrew fish
   stat:
       path: '{{ fish_bin }}'
@@ -59,15 +13,19 @@
       line: '{{ fish_bin }}'
 
 - name: Change shell to {{ chsh_shell }}
-  when: brew_fish is changed
+  when: brew_fish is changed and chsh|bool
   become: true
   command: '{{ chsh_bin }} {{ chsh_shell }}'
 
 - name: Link win32yank for Neovim
   when: is_wsl|bool
   become: true
+  template:
+    src: win32yank.exe.jinja2
+    dest: '{{ local_prefix }}/bin/win32yank.exe'
+    mode: 0755
+
+- name: Clean cache
   file:
-      path: '{{ local_prefix }}/bin/win32yank.exe'
-      src: '{{ neovim_win32yank }}'
-      state: link
-      mode: 0755
+      path: '{{ ansible_user_dir }}/.cache'
+      state: absent
