@@ -47,6 +47,14 @@
       - linuxbrew
   import_tasks: managers.yml
 
+- name: Install PowerShell
+  tags:
+    - packages
+    - powershell
+    - pwsh
+    - microsoft
+  import_tasks: powershell.yml
+
 - name: Install Fish plugins
   tags:
       - fish

@@ -251,3 +251,5 @@ alacritty_url: https://github.com/jwilm/alacritty.git
 rebeccastyle_repo:
     git: https://github.com/9999years/rebeccaessay
     dest: '{{ ansible_user_dir }}/projects/rebeccastyle'
+
+microsoft_deb: https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb

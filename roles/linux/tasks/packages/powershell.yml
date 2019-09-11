@@ -1,0 +1,27 @@
+---
+# https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-6#ubuntu-1804
+- name: Check for PowerShell
+  command: which pwsh
+  register: which_pwsh
+  changed_when: which_pwsh.rc == 1
+  failed_when: which_pwsh.rc not in [0, 1]
+
+- name: Install PowerShell
+  become: true
+  block:
+    - name: Install Microsoft GPG keys
+      apt:
+        deb: '{{ microsoft_deb }}'
+
+    - name: Update apt caches
+      apt:
+        update: true
+
+    - name: Enable 'universe' repositories
+      apt_repository:
+        repo: universe
+
+    - name: Install PowerShell
+      apt:
+        state: latest
+        package: powershell
