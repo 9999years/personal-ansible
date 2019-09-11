@@ -2,7 +2,7 @@
 - name: Check for rust-analyzer
   register: rust_analyzer_stat
   stat:
-      path: {{ cargo_bin_dir }}/ra_lsp_server
+      path: '{{ cargo_bin_dir }}/ra_lsp_server'
   changed_when: not rust_analyzer_stat.stat.exists
 
 - name: Build rust-analyzer

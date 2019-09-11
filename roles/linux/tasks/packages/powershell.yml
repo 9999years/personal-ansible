@@ -15,11 +15,10 @@
 
     - name: Update apt caches
       apt:
-        update: true
+        update_cache: true
 
-    - name: Enable 'universe' repositories
-      apt_repository:
-        repo: universe
+    - name: Enable 'universe' repositories for all components
+      command: add-apt-repository universe
 
     - name: Install PowerShell
       apt:
