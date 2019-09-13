@@ -19,6 +19,14 @@
             dest: '{{ tmpdir.path }}'
 
       - name: Build hexd
-        command: 'make && make install'
+        command: make
+        register: hexd_make
+        failed_when: hexd_make.rc == 0
+        args:
+            chdir: '{{ tmpdir.path }}'
+
+      - name: Install hexd
+        become: true
+        command: make install
         args:
             chdir: '{{ tmpdir.path }}'

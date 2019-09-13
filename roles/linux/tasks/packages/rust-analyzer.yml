@@ -2,7 +2,7 @@
 - name: Check for rust-analyzer
   register: rust_analyzer_stat
   stat:
-      path: {{ cargo_bin_dir }}/ra_lsp_server
+      path: '{{ cargo_bin_dir }}/ra_lsp_server'
   changed_when: not rust_analyzer_stat.stat.exists
 
 - name: Build rust-analyzer
@@ -18,7 +18,7 @@
             repo: https://github.com/rust-analyzer/rust-analyzer
             dest: '{{ tmpdir.path }}'
 
-      - name: Build hexd
+      - name: Build rust-analyzer (this will take some time -- be patient)
         command: cargo install-ra --server
         args:
             chdir: '{{ tmpdir.path }}'
