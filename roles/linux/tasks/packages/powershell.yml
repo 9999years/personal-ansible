@@ -7,6 +7,7 @@
   failed_when: which_pwsh.rc not in [0, 1]
 
 - name: Install PowerShell
+  when: which_pwsh is changed
   become: true
   block:
     - name: Install Microsoft GPG keys

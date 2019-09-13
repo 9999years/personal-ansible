@@ -56,7 +56,6 @@ apt_packages_essential:
     - ruby  # BDS 2-clause
     - ruby-dev
     - nodejs  # MIT
-    - npm  # Artistic License 2.0
 
 apt_packages:
       # editors
@@ -145,7 +144,7 @@ npm_packages:
     - babel-cli  # MIT
     - webpack  # MIT
     - hexo-cli  # MIT
-    - bash-language-server
+    # - bash-language-server
     - yarn
     - prettier
 

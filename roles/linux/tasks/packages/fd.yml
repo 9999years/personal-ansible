@@ -6,7 +6,7 @@
   changed_when: not (fd_stat.stat.exists and fd_stat.stat.executable)
 
 - name: Install fd
-  when: fd_stat|changed
+  when: fd_stat is changed
   block:
     - name: Create temporary file
       register: tmp_fd
