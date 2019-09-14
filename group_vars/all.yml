@@ -137,16 +137,18 @@ ruby_gems:
     - neovim  # MIT
     - uniscribe  # MIT
 
-# node_packages
-npm_packages:
+npm_packages:  # node_packages
+    - npm
     - neovim  # MIT
     - typescript  # Apache 2.0
     - babel-cli  # MIT
     - webpack  # MIT
     - hexo-cli  # MIT
-    # - bash-language-server
     - yarn
     - prettier
+
+npm_packages_skip: []
+npm_packages_extra: []
 
 cargo_packages:
   - ripgrep  # rg

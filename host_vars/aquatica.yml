@@ -1,2 +1,3 @@
 ---
-npm_install_become: true
+npm_packages_extra:
+  - bash-language-server

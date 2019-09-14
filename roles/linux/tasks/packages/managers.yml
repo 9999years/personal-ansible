@@ -8,14 +8,7 @@
 
 - name: Install apt packages
   become: true
-  loop: '{{ apt_packages }}'
-  when: item not in apt_packages_skip
-  apt:
-      package: '{{ item }}'
-
-- name: Install apt packages (extra)
-  become: true
-  loop: '{{ apt_packages_extra }}'
+  loop: '{{ apt_packages + apt_packages_extra }}'
   when: item not in apt_packages_skip
   apt:
       package: '{{ item }}'
@@ -25,18 +18,22 @@
       - brew
       - homebrew
       - linuxbrew
-  include_tasks: linuxbrew_packages.yml
+  when: install_homebrew|bool
+  become: true
+  become_user: '{{ user }}'
+  loop: '{{ packages }}'
   vars:
-      packages: '{{ homebrew_packages }}'
-
-- name: Install Linuxbrew packages (extra)
-  tags:
-      - brew
-      - homebrew
-      - linuxbrew
-  include_tasks: linuxbrew_packages.yml
-  vars:
-      packages: '{{ homebrew_packages_extra }}'
+      packages: '{{ homebrew_packages + homebrew_packages_extra }}'
+      # Spurious error
+      # https://github.com/microsoft/WSL/issues/1838
+      nice_warning: 'nice: cannot set niceness: Permission denied'
+  homebrew:
+      state: latest
+      package: '{{ item }}'
+      path: '{{ homebrew_bin_dir }}'
+  register: brew_install
+  failed_when: brew_install is failed
+          and (brew_install.msg|replace(nice_warning, '')).strip() != ''
 
 - name: Link Linuxbrew binaries to /usr/local/bin
   tags:
@@ -68,12 +65,13 @@
       state: latest
       user_install: false
 
-- name: Install Node packages
-  loop: '{{ npm_packages }}'
+- name: Install Node (npm) packages
   become: '{{ npm_install_become|bool }}'
   tags:
       - node
       - npm
+  loop: '{{ npm_packages + npm_packages_extra }}'
+  when: item not in npm_packages_skip
   npm:
       executable: '{{ npm_bin }}'
       global: true

@@ -1,22 +1,22 @@
 #! /bin/bash
-set -e
+set -o errexit
 
 if [[ "$(id -u)" -eq 0 ]]
 then
     echo "First-time installation running as root."
-    set -v
+    set -o verbose
     apt update
     apt install -y python-pip
     pip install ansible
     sudo -u $(hostname) ansible-playbook -K site.yml -l "$(hostname)" $@
-    set +v
+    set +o verbose
 else
     if ! command -v ansible-playbook > /dev/null
     then
         echo "ansible-playbook not found; did you mean to run as root and install prereqs?"
         exit 1
     fi
-    set -v
+    set -o verbose
     ansible-playbook site.yml -l "$(hostname)" $@
-    set +v
+    set +o verbose
 fi
