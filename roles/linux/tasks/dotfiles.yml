@@ -1,4 +1,10 @@
 ---
+- name: Check for .gitconfig
+  register: has_gitconfig
+  stat:
+    path: '{{ ansible_user_dir }}/.gitconfig'
+  changed_when: not has_gitconfig.stat.exists
+
 - name: Check for 'helper = "manager"' in .gitconfig
   register: needs_gitconfig
   command:
@@ -7,11 +13,12 @@
       - -E
       - '^\s+helper\s*=\s*[''"]?manager[''"]?$'
       - '{{ ansible_user_dir }}/.gitconfig'
+  when: has_gitconfig is not changed
   changed_when: needs_gitconfig.rc == 1
   failed_when: needs_gitconfig.rc not in [0, 1]
 
 - name: Use bootstrapping .gitconfig
-  when: needs_gitconfig is changed
+  when: has_gitconfig is changed or needs_gitconfig is changed
   become: true
   become_user: '{{ user }}'
   copy:

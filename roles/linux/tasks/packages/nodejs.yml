@@ -1,0 +1,29 @@
+---
+- name: Check for Node.js
+  command: node -v
+  register: node_check
+  when: install_nodejs
+  failed_when: false
+  changed_when: node_check.rc != 0
+    or not node_check.stdout.startswith('v' + nodejs_version_num)
+
+- name: Install Node.js
+  when: node_check is changed
+    and install_nodejs
+  become: true
+  block:
+    - name: Add Node.js key
+      apt_key:
+          url: '{{ nodejs_gpg_key }}'
+
+    - name: Add Node.js repo
+      apt_repository:
+        filename: nodesource
+        repo: >
+            deb https://deb.nodesource.com/{{ nodejs_version }} bionic main
+            deb-src https://deb.nodesource.com/{{ nodejs_version }} bionic main
+
+    - name: Install Node.js
+      apt:
+        state: latest
+        package: nodejs

@@ -32,6 +32,14 @@
       - packages
   import_tasks: bootstrap_pip.yml
 
+- name: Install Node.js
+  tags:
+      - packages
+      - node
+      - nodejs
+      - npm
+  import_tasks: nodejs.yml
+
 - name: Bootstrap npm
   when: bootstrap_npm|bool
   tags:

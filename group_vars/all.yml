@@ -55,7 +55,6 @@ apt_packages_essential:
     - openjdk-11-jdk  # GPL v2
     - ruby  # BDS 2-clause
     - ruby-dev
-    - nodejs  # MIT
 
 apt_packages:
       # editors
@@ -152,6 +151,11 @@ npm_packages_extra: []
 
 cargo_packages:
   - ripgrep  # rg
+
+install_nodejs: true
+nodejs_gpg_key: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+nodejs_version_num: '12'
+nodejs_version: node_{{ nodejs_version_num }}.x
 
 bootstrap_npm: false
 npm_install_become: true
