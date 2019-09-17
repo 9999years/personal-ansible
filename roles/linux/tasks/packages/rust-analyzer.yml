@@ -19,6 +19,6 @@
             dest: '{{ tmpdir.path }}'
 
       - name: Build rust-analyzer (this will take some time -- be patient)
-        command: cargo install-ra --server
+        command: '{{ cargo_bin }} install-ra --server'
         args:
             chdir: '{{ tmpdir.path }}'

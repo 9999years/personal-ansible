@@ -19,6 +19,13 @@
             dest: '{{ tmpdir.path }}'
 
       - name: Build pixd
-        shell: 'make && make install'
+        command: make
+        register: pixd_make
+        args:
+            chdir: '{{ tmpdir.path }}'
+
+      - name: Install pixd
+        become: true
+        command: make install
         args:
             chdir: '{{ tmpdir.path }}'

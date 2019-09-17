@@ -247,7 +247,7 @@ chsh_bin: chsh {{ ansible_user_id }} --shell
 
 fd_version: '7.3.0'
 fd_arch: amd64
-fd_url: https://github.com/sharkdp/fd/releases/download/v{{ fd_version }}/fd_{{ fd_version }}_{{ fd_arch }}.deb
+fd_deb: https://github.com/sharkdp/fd/releases/download/v{{ fd_version }}/fd_{{ fd_version }}_{{ fd_arch }}.deb
 fd_bin: /usr/bin/fd
 
 install_alacritty: false

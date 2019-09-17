@@ -7,17 +7,6 @@
 
 - name: Install fd
   when: fd_stat is changed
-  block:
-    - name: Create temporary file
-      register: tmp_fd
-      tempfile:
-        suffix: .deb
-
-    - name: Download fd
-      get_url:
-        url: '{{ fd_url }}'
-        dest: '{{ tmp_fd.path }}'
-
-    - name: Install fd
-      become: true
-      command: dpkg -i {{ tmp_fd.path }}
+  become: true
+  apt:
+    deb: '{{ fd_deb }}'

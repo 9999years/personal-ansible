@@ -21,7 +21,6 @@
       - name: Build hexd
         command: make
         register: hexd_make
-        failed_when: hexd_make.rc == 0
         args:
             chdir: '{{ tmpdir.path }}'
 
