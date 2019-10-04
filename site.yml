@@ -2,4 +2,5 @@
 - name: Configure Linux
   hosts: all
   roles:
-          - linux
+    - is_wsl
+    - linux

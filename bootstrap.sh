@@ -7,7 +7,7 @@ then
     set -o verbose
     apt update
     apt install -y python-pip
-    pip install ansible
+    sudo -H pip install ansible
     sudo -u $(hostname) ansible-playbook -K site.yml -l "$(hostname)" $@
     set +o verbose
 else

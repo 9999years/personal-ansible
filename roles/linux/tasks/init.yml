@@ -1,6 +1,6 @@
 ---
 - name: Give self passwordless sudo
-  when: is_wsl|bool
+  when: is_wsl|default(false)|bool
   become: true
   template:
       src: sudoers.jinja2
@@ -8,7 +8,7 @@
       mode: 0440
 
 - name: Ensure umask 022 in /etc/profile
-  when: is_wsl|bool
+  when: is_wsl|default(false)|bool
   become: true
   lineinfile:
       path: /etc/profile

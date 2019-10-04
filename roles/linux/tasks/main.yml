@@ -1,12 +1,4 @@
 ---
-- name: Detect WSL
-  tags:
-      - config
-      - vim
-      - packages
-  set_fact:
-    is_wsl: '{{ "Microsoft" in lookup("file", "/proc/version") }}'
-
 - name: Initial config
   tags:
       - config

@@ -18,7 +18,7 @@
   command: '{{ chsh_bin }} {{ chsh_shell }}'
 
 - name: Link win32yank for Neovim
-  when: is_wsl|bool
+  when: is_wsl|default(false)|bool
   become: true
   template:
     src: win32yank.exe.jinja2
@@ -26,6 +26,7 @@
     mode: 0755
 
 - name: Clean cache
+  become: true
   file:
       path: '{{ ansible_user_dir }}/.cache'
       state: absent

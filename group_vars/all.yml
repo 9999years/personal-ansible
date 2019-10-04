@@ -59,7 +59,7 @@ apt_packages_essential:
 apt_packages:
       # editors
     - vim  # GPL-compatible
-    - vim-gtk
+    # - vim-gtk
       # shell utilities / dev tools
     - linuxbrew-wrapper
     - shellcheck  # GPL v3
@@ -68,8 +68,8 @@ apt_packages:
     - imagemagick  # Derived Apache 2.0
     - graphviz  # CPL 1.0
     - toilet  # command-line ascii art generator
-    #- reptyer
-    #- pdftk
+    # - reptyer
+    # - pdftk
       # git
     - gitk
       # programming languages
@@ -103,34 +103,38 @@ homebrew_links:
 
 pip_bin: '{{ homebrew_bin_dir }}/pip3'
 pip_packages:
+    - Pillow
+    - PyYAML
+    - Pygments
+    - arrow
     - atomicwrites
     - attrs
     - beautifulsoup4
+    - black
     - cached-property
     - cachetools
     - colorama
     - grip
     - more-itertools
-    - numpy
-    - numba
-    - Pillow
-    - pynvim
+    - mypy
     - neovim
+    - numba
+    - numpy
+    - pep8
+    - ptpython
+    - pycodestyle
+    - pylint
+    - pynvim
+    - pytest
+    - python-dateutil
+    - python-decouple
     - requests
     - termcolor
     - toml
-    - PyYAML
     - urllib3
     - virtualenv
-    - youtube-dl
     - wcwidth
-    - ptpython
-    - pytest
-    - Pygments
-    - python-decouple
-    - arrow
-    - python-dateutil
-    - mypy
+    - youtube-dl
 
 ruby_gems:
     - neovim  # MIT
@@ -151,6 +155,7 @@ npm_packages_extra: []
 
 cargo_packages:
   - ripgrep  # rg
+  - cargo-watch
 
 install_nodejs: true
 nodejs_gpg_key: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
