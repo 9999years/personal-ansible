@@ -92,6 +92,7 @@ homebrew_packages:
     - hub  # MIT
     - nvim
 homebrew_packages_extra: []
+homebrew_packages_skip: []
 
 homebrew_links:
     - git-credential-manager
@@ -153,10 +154,6 @@ npm_packages:  # node_packages
 npm_packages_skip: []
 npm_packages_extra: []
 
-cargo_packages:
-  - ripgrep  # rg
-  - cargo-watch
-
 install_nodejs: true
 nodejs_gpg_key: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
 nodejs_version_num: '12'
@@ -201,6 +198,10 @@ rustup_arch: x86_64-unknown-linux-gnu
 rustup_url: https://static.rust-lang.org/rustup/dist/{{ rustup_arch }}/rustup-init
 cargo_bin_dir: '{{ ansible_user_dir }}/.cargo/bin'
 cargo_bin: '{{ cargo_bin_dir }}/cargo'
+
+cargo_packages:
+  - ripgrep  # rg
+  - cargo-watch
 
 fish_version: 3.0.2
 fish_bin: '{{ homebrew_bin_dir }}/fish'
@@ -263,3 +264,25 @@ rebeccastyle_repo:
     dest: '{{ ansible_user_dir }}/projects/rebeccastyle'
 
 microsoft_deb: https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+
+dhall_repo: dhall-lang/dhall-haskell
+dhall_arch: x86_64
+dhall_platform: linux
+dhall_archive_ext: tar.bz2
+dhall_ext: '{{ dhall_arch }}-{{ dhall_platform }}.{{ dhall_archive_ext }}'
+dhall_version: 1.26.1
+dhall_packages:
+  - name: dhall
+    ver: 1.26.1
+  - name: dhall-bash
+    creates: dhall-to-bash
+    ver: 1.0.23
+  - name: dhall-json
+    creates: dhall-to-json
+    ver: 1.4.1
+  - name: dhall-lsp-server
+    ver: 1.0.1
+  - name: dhall-nix
+    creates: dhall-to-nix
+    ver: 1.1.8
+dhall_url_prefix: https://github.com/{{ dhall_repo }}/releases/download/{{ dhall_version }}

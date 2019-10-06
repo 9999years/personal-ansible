@@ -36,8 +36,10 @@
   loop:
     - cargo
     - clippy
-    - docs
+    - rust-docs
     - rust-src
+    - rustfmt
+    - rls
   command: '{{ cargo_bin_dir }}/rustup component add {{ item }}'
 
 - name: Install rust-analyzer

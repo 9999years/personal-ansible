@@ -55,6 +55,12 @@
       - linuxbrew
   import_tasks: managers.yml
 
+- name: Install Dhall (dhall-lang.org)
+  tags:
+    - packages
+    - dhall
+  import_tasks: dhall.yml
+
 - name: Install PowerShell
   tags:
     - packages

@@ -1,17 +1,20 @@
 ---
+- debug:
+    msg: "Installing apt packages: {{ apt_packages_essential|reject('in', apt_packages_skip)|join(', ') }}"
+
 - name: Install apt packages (essential)
   become: true
-  loop: '{{ apt_packages_essential }}'
-  when: item not in apt_packages_skip
+  tags:
+    - apt
   apt:
-      package: '{{ item }}'
+      name: "{{ apt_packages_essential|reject('in', apt_packages_skip)|list }}"
 
 - name: Install apt packages
   become: true
-  loop: '{{ apt_packages + apt_packages_extra }}'
-  when: item not in apt_packages_skip
+  tags:
+    - apt
   apt:
-      package: '{{ item }}'
+      name: "{{ (apt_packages + apt_packages_extra)|reject('in', apt_packages_skip)|list }}"
 
 - name: Install Linuxbrew packages
   tags:
@@ -21,15 +24,14 @@
   when: install_homebrew|bool
   become: true
   become_user: '{{ user }}'
-  loop: '{{ packages }}'
   vars:
-      packages: '{{ homebrew_packages + homebrew_packages_extra }}'
       # Spurious error
       # https://github.com/microsoft/WSL/issues/1838
       nice_warning: 'nice: cannot set niceness: Permission denied'
   homebrew:
       state: latest
-      package: '{{ item }}'
+      package: "{{ (homebrew_packages + homebrew_packages_extra)|reject('in', homebrew_packages_skip)|list }}"
+
       path: '{{ homebrew_bin_dir }}'
   register: brew_install
   failed_when: brew_install is failed
@@ -44,6 +46,7 @@
   when: install_homebrew|bool
   loop: '{{ homebrew_links }}'
   become: true
+  failed_when: false
   file:
       state: link
       src: '{{ homebrew_bin_dir }}/{{ item }}'
@@ -70,7 +73,7 @@
   tags:
       - node
       - npm
-  loop: '{{ npm_packages + npm_packages_extra }}'
+  loop: "{{( npm_packages + npm_packages_extra)|reject('in', npm_packages_skip)|list }}"
   when: item not in npm_packages_skip
   npm:
       executable: '{{ npm_bin }}'
