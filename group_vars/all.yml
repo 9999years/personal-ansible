@@ -237,11 +237,10 @@ install_miktex: true
 miktex_gpg_key: D6BC243565B2087BC3F897C9277A7293F59E4889
 miktex_apt_repo: deb http://miktex.org/download/ubuntu bionic universe
 miktex_mpm_bin: /usr/bin/mpm
-miktex_local_root: '{{ ansible_user_dir }}/.texmf'
 
 # Options: 'essential', 'basic', 'complete'
 miktex_package_level: basic
-user_texmf_root: '{{ ansible_user_dir }}/.texmf/'
+user_texmf_root: '{{ ansible_user_dir }}/.miktex/texmfs/install'
 
 bootstrap_pip: false
 bootstrap_pip_url: https://bootstrap.pypa.io/get-pip.py

@@ -134,6 +134,8 @@
   tags:
       - packages
       - tex
+      - texlive
+      - tex-live
   become: true
   apt:
       package: texlive
@@ -143,4 +145,5 @@
   tags:
       - packages
       - tex
+      - miktex
   import_tasks: miktex.yml

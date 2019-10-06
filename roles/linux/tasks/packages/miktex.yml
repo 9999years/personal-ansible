@@ -28,7 +28,7 @@
 
 - name: Create local root directory
   file:
-    path: '{{ miktex_local_root }}'
+    path: '{{ user_texmf_root }}'
     state: directory
 
 - name: Clone rebeccastyle
@@ -37,13 +37,14 @@
     dest: '{{ rebeccastyle_repo.dest }}'
 
 - name: Install rebeccastyle
-  command: make install
+  command: 'make install TEXMF={{ user_texmf_root }}'
   args:
     chdir: '{{ rebeccastyle_repo.dest }}'
 
 - name: Register user TEXMF root {{ user_texmf_root }}
+  when: false
   become: true
-  command: initexmf --admin --verbose --user-roots={{ user_texmf_root }}
+  command: 'initexmf --admin --verbose --user-roots={{ user_texmf_root|quote }}'
 
 - name: Refresh FNDB (root)
   become: true
@@ -51,3 +52,11 @@
 
 - name: Refresh FNDB (user)
   command: initexmf --verbose --update-fndb
+
+- name: Check for rebeccastyle
+  loop:
+    - rebeccastyle.sty
+    - rebeccaessay.cls
+  # Gives rc=1 when file isn't found.
+  command: kpsewhich {{ item }}
+  changed_when: false
