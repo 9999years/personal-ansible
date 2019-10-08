@@ -28,9 +28,18 @@
             --no-modify-path
             -y
 
+- name: Add Nightly Rust
+  register: rustup_nightly
+  changed_when: >-
+    'installing' in rustup_nightly.stdout
+  command: >-
+      {{ cargo_bin_dir }}/rustup toolchain add nightly
+
 - name: Upgrade Rust
-  when: rust_check is not changed
   command: '{{ cargo_bin_dir }}/rustup update'
+  register: rustup_update
+  changed_when: >-
+    'installing' in rustup_update.stdout
 
 - name: Ensure Rust components are up-to-date
   loop:
@@ -40,7 +49,25 @@
     - rust-src
     - rustfmt
     - rls
+    - rust-analysis
   command: '{{ cargo_bin_dir }}/rustup component add {{ item }}'
+  register: rustup_component
+  changed_when: >-
+    'installing' in rustup_component.stdout
 
-- name: Install rust-analyzer
-  import_tasks: rust-analyzer.yml
+# - name: Install rust-analyzer
+  # import_tasks: rust-analyzer.yml
+
+- name: Install Cargo binaries
+  loop: '{{ cargo_packages }}'
+  command: >-
+    {{ cargo_bin_dir }}/cargo
+    {{ ('+' + item.toolchain|d('')).rstrip('+') }}
+    install
+    {{ item.crate|default(item) }}
+  register: cargo_install
+  failed_when: cargo_install.rc != 0
+    and not (cargo_install.rc == 101
+             and cargo_install.stderr.endswith('Add --force to overwrite'))
+  changed_when: >-
+    'Compiling' in cargo_install.stderr

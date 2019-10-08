@@ -86,6 +86,7 @@
   tags:
       - packages
       - rust
+      - cargo
   import_tasks: rust.yml
 
 - name: Install Talisman (github.com/thoughtworks/talisman)  # MIT

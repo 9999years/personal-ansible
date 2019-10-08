@@ -68,6 +68,7 @@ apt_packages:
     - imagemagick  # Derived Apache 2.0
     - graphviz  # CPL 1.0
     - toilet  # command-line ascii art generator
+    - libclang-dev  # 0.5gb :(
     # - reptyer
     # - pdftk
       # git
@@ -199,9 +200,93 @@ rustup_url: https://static.rust-lang.org/rustup/dist/{{ rustup_arch }}/rustup-in
 cargo_bin_dir: '{{ ansible_user_dir }}/.cargo/bin'
 cargo_bin: '{{ cargo_bin_dir }}/cargo'
 
+# https://github.com/rust-unofficial/awesome-rust#applications
 cargo_packages:
+  - --git https://github.com/darakian/ddh ddh
+  - --git https://github.com/lotabout/rargs rargs
+  # cat(1) clone with syntax highlighting, prints non-printing characters with
+  # -A, git integration, etc.
+  # https://github.com/sharkdp/bat
+  - bat  # requires libclang-dev
+  # Binary introspection
+  # https://github.com/m4b/bingrep
+  - bingrep
+  # "exa is a replacement for ls written in Rust."
+  # https://github.com/ogham/exa
+  - exa
+  # "The next gen ls command"
+  # https://github.com/Peltoche/lsd
+  - lsd
+  # "Find files with SQL-like queries"
+  # https://github.com/jhspetersson/fselect
+  - fselect
+  # "Yet another fancy watcher. (Inspired by antr / entr)"
+  # "Configure execution of different commands using semantic yaml."
+  # https://github.com/cristianoliveira/funzzy
+  - funzzy
+  # "With fw you have a configuration describing your workspace. It takes care
+  # of cloning projects and can run commands across your entire workspace. You
+  # can start working on any project quickly, even if it’s not in your flat
+  # structured workspace"
+  # https://github.com/brocode/fw
+  - fw
+  # Hexdump
+  # https://github.com/sitkevij/hex
+  - hx
+  # CLI benchmarker
+  # https://github.com/sharkdp/hyperfine
+  - hyperfine
+  # Faster grep.
+  # https://github.com/BurntSushi/ripgrep
   - ripgrep  # rg
+  # - runiq  # requires cmake
+  - ruplacer
+  # Find-and-replacer
+  # https://github.com/chmln/sd
+  - sd
+  # "Find Files (ff) utility recursively searches the files whose names match
+  # the specified RegExp pattern in the provided directory (defaults to the
+  # current directory if not provided)."
+  # https://github.com/vishaltelangre/ff
+  - ff
+  # Fuzzy finder
+  # https://github.com/lotabout/skim
+  - skim
+  # Cloc
+  # https://github.com/XAMPPRocky/tokei
+  - tokei
+  # CSV data manipulation and analysis tool.
+  # https://github.com/BurntSushi/xsv
+  - xsv
+  # Generates a dep graph
+  # https://github.com/m-cat/cargo-deps
+  - cargo-deps
+  # This tool extends Cargo to allow you to add, remove, and upgrade
+  # dependencies by modifying your Cargo.toml file from the command line.
+  # https://github.com/killercup/cargo-edit
+  - cargo-edit
+  # https://github.com/sagiegurari/cargo-make
+  - cargo-make
+  # - cargo-modules  Requires nightly to *run* as of 0.4.4
+  # "displays when newer versions of Rust dependencies are available, or out of
+  # date"
+  # https://github.com/kbknapp/cargo-outdated
+  - --git https://github.com/kbknapp/cargo-outdated
+  # https://github.com/sunng87/cargo-release
+  - cargo-release
+  # Dep tree.
+  # https://github.com/sfackler/cargo-tree
+  - cargo-tree
+  # Updates deps.
+  # https://github.com/nabijaczleweli/cargo-update
+  - cargo-update
+  # Watches source files.
+  # https://github.com/passcod/cargo-watch
   - cargo-watch
+  # Broken as of 2019-10-08.
+  # https://github.com/racer-rust/racer
+  # - toolchain: nightly
+    # crate: racer
 
 fish_version: 3.0.2
 fish_bin: '{{ homebrew_bin_dir }}/fish'
@@ -229,8 +314,8 @@ neovim_win_root: /mnt/c/tools/neovim/Neovim
 neovim_win_bin_dir: '{{ neovim_win_root }}/bin'
 neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'
 
-install_hexd: true
-install_pixd: true
+install_hexd: false
+install_pixd: false
 
 install_texlive: false
 install_miktex: true
