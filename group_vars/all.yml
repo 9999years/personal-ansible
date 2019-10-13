@@ -249,7 +249,7 @@ cargo_packages:
   # the specified RegExp pattern in the provided directory (defaults to the
   # current directory if not provided)."
   # https://github.com/vishaltelangre/ff
-  - ff
+  - find-files
   # Fuzzy finder
   # https://github.com/lotabout/skim
   - skim
