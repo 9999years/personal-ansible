@@ -69,6 +69,7 @@ apt_packages:
     - graphviz  # CPL 1.0
     - toilet  # command-line ascii art generator
     - libclang-dev  # 0.5gb :(
+    - zlib1g-dev  # Required for cargo-update
     # - reptyer
     # - pdftk
       # git
