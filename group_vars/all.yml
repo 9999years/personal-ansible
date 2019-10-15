@@ -69,6 +69,7 @@ apt_packages:
     - graphviz  # CPL 1.0
     - toilet  # command-line ascii art generator
     - libclang-dev  # 0.5gb :(
+    - zlib1g-dev  # Required for cargo-update
     # - reptyer
     # - pdftk
       # git
@@ -251,7 +252,7 @@ cargo_packages:
   # the specified RegExp pattern in the provided directory (defaults to the
   # current directory if not provided)."
   # https://github.com/vishaltelangre/ff
-  - ff
+  - find-files
   # Fuzzy finder
   # https://github.com/lotabout/skim
   - skim
