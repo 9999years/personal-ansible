@@ -137,6 +137,7 @@ pip_packages:
     - virtualenv
     - wcwidth
     - youtube-dl
+    - vim-vint
 
 ruby_gems:
     - neovim  # MIT
@@ -151,6 +152,8 @@ npm_packages:  # node_packages
     - hexo-cli  # MIT
     - yarn
     - prettier
+    - markdownlint-cli
+    - write-good
 
 npm_packages_skip: []
 npm_packages_extra: []
