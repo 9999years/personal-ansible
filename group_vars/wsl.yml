@@ -4,3 +4,4 @@ bootstrap_gcm: true
 # symlinks:
 #     - from: '{{ ansible_user_dir }}/.config/alacritty/alacritty.yml'
 #       to: /mnt/c/Users/arvensis/AppData/Roaming/alacritty/alacritty.yml
+debloat_url: https://raw.githubusercontent.com/Sycnex/Windows10Debloater/master/Windows10SysPrepDebloater.ps1

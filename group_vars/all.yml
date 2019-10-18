@@ -1,7 +1,9 @@
 ---
+initial_setup: false
 ansible_connection: local
 user: '{{ ansible_hostname }}'
 has_root: true
+is_wsl: '{{ "Microsoft" in ansible_kernel or "Windows" in ansible_kernel }}'
 
 local_prefix: /usr/local
 

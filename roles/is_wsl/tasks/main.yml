@@ -1,4 +1,0 @@
----
-- name: Detect WSL
-  set_fact:
-    is_wsl: '{{ "Microsoft" in ansible_kernel or "Windows" in ansible_kernel }}'
