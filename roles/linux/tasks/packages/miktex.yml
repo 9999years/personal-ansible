@@ -37,7 +37,7 @@
     dest: '{{ rebeccastyle_repo.dest }}'
 
 - name: Install rebeccastyle
-  command: 'make install TEXMF={{ user_texmf_root }}'
+  command: 'just install {{ user_texmf_root }}'
   args:
     chdir: '{{ rebeccastyle_repo.dest }}'
 

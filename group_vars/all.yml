@@ -161,7 +161,7 @@ npm_packages_extra: []
 
 install_nodejs: true
 nodejs_gpg_key: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-nodejs_version_num: '12'
+nodejs_version_num: '13'
 nodejs_version: node_{{ nodejs_version_num }}.x
 
 bootstrap_npm: false
