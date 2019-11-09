@@ -141,6 +141,7 @@ pip_packages:
     - virtualenv
     - wcwidth
     - youtube-dl
+    - vim-vint  # vimscript lint: https://github.com/Kuniwak/vint
 
 ruby_gems:
     - neovim  # MIT
