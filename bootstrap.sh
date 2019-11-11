@@ -8,7 +8,7 @@ then
     apt update
     apt install -y python-pip
     sudo -H pip install ansible
-    sudo -u $(hostname) ansible-playbook -K site.yml -l "$(hostname)" $@
+    sudo -u "$(hostname)" ansible-playbook -K site.yml -l "$(hostname)" "$@"
     set +o verbose
 else
     if ! command -v ansible-playbook > /dev/null
@@ -17,6 +17,6 @@ else
         exit 1
     fi
     set -o verbose
-    ansible-playbook site.yml -l "$(hostname)" $@
+    ansible-playbook site.yml -l "$(hostname)" "$@"
     set +o verbose
 fi

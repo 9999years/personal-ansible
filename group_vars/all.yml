@@ -85,6 +85,7 @@ homebrew_install: https://raw.githubusercontent.com/Linuxbrew/install/master/ins
 homebrew_root: /home/linuxbrew/.linuxbrew
 homebrew_bin: '{{ homebrew_root }}/Homebrew/bin/brew'
 homebrew_bin_dir: '{{ homebrew_root }}/bin'
+
 homebrew_packages:
     - git-credential-manager  # MIT
     - fish  # GPL v2 & LGPL v2, OpenBSD License, ISC, NetBSD
@@ -93,6 +94,8 @@ homebrew_packages:
     - jq  # MIT
     - hub  # MIT
     - nvim
+    - just  # github.com/casey/just
+
 homebrew_packages_extra: []
 homebrew_packages_skip: []
 
