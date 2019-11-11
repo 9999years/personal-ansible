@@ -18,12 +18,33 @@
   command: '{{ chsh_bin }} {{ chsh_shell }}'
 
 - name: Link win32yank for Neovim
-  when: is_wsl|default(false)|bool
+  when: is_wsl|bool
   become: true
   template:
     src: win32yank.exe.jinja2
     dest: '{{ local_prefix }}/bin/win32yank.exe'
     mode: 0755
+
+- name: Debloat Windows (github.com/Sycnex/Windows10Debloater)
+  tags:
+    - wsl
+    - debloat
+  when: is_wsl|bool and initial_setup|bool
+  block:
+    - debug:
+        msg: This script removes a lot of bloatware from Windows 10; it
+          requires admin rights, so it makes this role a lot less 'hands-free',
+          hence its gating behind the 'initial_setup' variable. Prepare to
+          confirm a UAC prompt!
+    - name: Debloat Windows (github.com/Sycnex/Windows10Debloater)
+      command: >-
+        /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command
+        'Start-Process powershell.exe -ArgumentList
+        ("-NoProfile
+        -ExecutionPolicy Bypass
+        -Command `"iex ((New-Object System.Net.WebClient).DownloadString.(\'{{ debloat_url }}\')); Read-Host \'Press <Enter> to exit.\'`"
+        -f $PSCommandPath")
+        -Verb RunAs'
 
 - name: Clean cache
   become: true

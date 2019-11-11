@@ -1,6 +1,9 @@
 ---
+initial_setup: false
 ansible_connection: local
 user: '{{ ansible_hostname }}'
+has_root: true
+is_wsl: '{{ "Microsoft" in ansible_kernel or "Windows" in ansible_kernel }}'
 
 local_prefix: /usr/local
 
@@ -141,7 +144,7 @@ pip_packages:
     - virtualenv
     - wcwidth
     - youtube-dl
-    - vim-vint
+    - vim-vint  # vimscript lint: https://github.com/Kuniwak/vint
 
 ruby_gems:
     - neovim  # MIT
@@ -164,7 +167,7 @@ npm_packages_extra: []
 
 install_nodejs: true
 nodejs_gpg_key: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-nodejs_version_num: '12'
+nodejs_version_num: '13'
 nodejs_version: node_{{ nodejs_version_num }}.x
 
 bootstrap_npm: false
@@ -342,7 +345,7 @@ chsh: true
 chsh_shell: '{{ fish_bin }}'
 chsh_bin: chsh {{ ansible_user_id }} --shell
 
-fd_version: '7.3.0'
+fd_version: '7.4.0'
 fd_arch: amd64
 fd_deb: https://github.com/sharkdp/fd/releases/download/v{{ fd_version }}/fd_{{ fd_version }}_{{ fd_arch }}.deb
 fd_bin: /usr/bin/fd

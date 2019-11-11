@@ -28,6 +28,15 @@
             --no-modify-path
             -y
 
+- name: Ensure ~/.rustup is not owned by root
+  become: true
+  file:
+    path: '{{ ansible_user_dir }}/.rustup'
+    state: directory
+    recurse: true
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+
 - name: Add Nightly Rust
   register: rustup_nightly
   changed_when: >-

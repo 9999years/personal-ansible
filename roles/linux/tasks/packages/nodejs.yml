@@ -19,7 +19,7 @@
     - name: Add Node.js repo
       apt_repository:
         filename: nodesource
-        repo: >
+        repo: |
             deb https://deb.nodesource.com/{{ nodejs_version }} bionic main
             deb-src https://deb.nodesource.com/{{ nodejs_version }} bionic main
 

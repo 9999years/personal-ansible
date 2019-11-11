@@ -1,6 +1,21 @@
 ---
+- name: Check for local vimfiles repository
+  stat:
+    path: '{{ vimfiles.dest }}'
+  register: vimfiles_stat
+
+- name: Check if vimfiles repository has local changes
+  when: vimfiles_stat.stat.exists
+  command: git status
+  args:
+    chdir: '{{ vimfiles.dest }}'
+  register: vimfiles_git_status
+  changed_when: >
+    'nothing to commit, working tree clean' not in vimfiles_git_status.stdout
+
 - name: Clone vimfiles repository
   register: vimfiles_git
+  when: vimfiles_git_status is not changed
   become: true
   become_user: '{{ user }}'
   git:
