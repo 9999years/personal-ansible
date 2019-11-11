@@ -7,6 +7,8 @@
 - name: Check if vimfiles repository has local changes
   when: vimfiles_stat.stat.exists
   command: git status
+  args:
+    chdir: '{{ vimfiles.dest }}'
   register: vimfiles_git_status
   changed_when: >
     'nothing to commit, working tree clean' not in vimfiles_git_status.stdout
