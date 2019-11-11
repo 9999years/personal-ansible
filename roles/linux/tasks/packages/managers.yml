@@ -16,7 +16,7 @@
   apt:
       name: "{{ (apt_packages + apt_packages_extra)|reject('in', apt_packages_skip)|list }}"
 
-- name: Install Linuxbrew packages
+- name: Install/upgrade Linuxbrew packages
   tags:
       - brew
       - homebrew
@@ -31,8 +31,9 @@
   homebrew:
       state: latest
       package: "{{ (homebrew_packages + homebrew_packages_extra)|reject('in', homebrew_packages_skip)|list }}"
-
       path: '{{ homebrew_bin_dir }}'
+      update_homebrew: true
+      upgrade_all: true
   register: brew_install
   failed_when: brew_install is failed
           and (brew_install.msg|replace(nice_warning, '')).strip() != ''

@@ -140,6 +140,7 @@ pip_packages:
     - requests
     - termcolor
     - toml
+    - unidecode
     - urllib3
     - virtualenv
     - wcwidth
