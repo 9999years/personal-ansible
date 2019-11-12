@@ -7,14 +7,11 @@
 
 - name: Check for 'helper = "manager"' in .gitconfig
   register: needs_gitconfig
-  command:
-    argv:
-      - grep
-      - -E
-      - '^\s+helper\s*=\s*[''"]?manager[''"]?$'
-      - '{{ ansible_user_dir }}/.gitconfig'
+  command: git config
+              --file {{ ansible_user_dir }}/.gitconfig
+              --get credential.helper
   when: has_gitconfig is not changed
-  changed_when: needs_gitconfig.rc == 1
+  changed_when: needs_gitconfig.stdout != 'manager'
   failed_when: needs_gitconfig.rc not in [0, 1]
 
 - name: Use bootstrapping .gitconfig
