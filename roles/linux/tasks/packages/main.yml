@@ -148,3 +148,19 @@
       - tex
       - miktex
   import_tasks: miktex.yml
+
+- name: Install haskell-stack
+  tags:
+      - haskell
+      - ghc
+      - stack
+  import_tasks: haskell-stack.yml
+
+- name: Install haskell-ide-engine
+  tags:
+      - haskell
+      - hie
+      - ghc
+      - stack
+      - haskell-ide-engine
+  import_tasks: haskell-ide-engine.yml

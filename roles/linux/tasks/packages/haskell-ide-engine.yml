@@ -1,0 +1,52 @@
+---
+- name: Check for haskell-ide-engine
+  stat:
+    path: '{{ ansible_user_dir }}/.local/bin/hie'
+  register: hie_stat
+
+- name: Get haskell-stack local-bin path
+  when: not hie_stat.stat.exists
+  command: stack path --local-bin
+  register: stack_bin
+
+- name: Check for hie in stack local-bin path
+  when: not hie_stat.stat.exists
+  stat:
+    path: '{{ stack_bin.stdout }}/hie'
+  register: hie_stat2
+
+- name: Install haskell-ide-engine
+  when: not hie_stat.stat.exists and not hie_stat2.stat.exists
+  block:
+    - name: Install haskell-ide-engine deps
+      become: true
+      apt:
+        name: [libicu-dev, libtinfo-dev, libgmp-dev]
+
+    - name: Create temporary directory
+      register: tmp_hie
+      tempfile:
+        state: directory
+
+    - name: Clone haskell-ide-engine repo
+      git:
+        dest: '{{ tmp_hie.path }}'
+        repo: https://github.com/haskell/haskell-ide-engine.git
+        depth: 1  # shallow clone
+
+    - name: Checkout submodules
+      command: git submodule update --init --recursive --recommend-shallow
+      args:
+        chdir: '{{ tmp_hie.path }}'
+
+    - name: Build haskell-ide-engine
+      shell: stack install && stack ./install.hs build-data
+      args:
+        chdir: '{{ tmp_hie.path }}'
+      environment:
+        PATH: '{{ stack_bin.stdout }}:{{ ansible_env.PATH }}'
+
+    - name: Remove temporary directory
+      file:
+        state: absent
+        path: '{{ tmp_hie.path }}'

@@ -1,0 +1,16 @@
+---
+- name: Check for haskell-stack
+  stat:
+    path: /usr/local/bin/stack
+  register: stack_stat
+
+- name: Install haskell-stack
+  # YOLO LOL
+  become: true
+  shell: curl -sSL https://get.haskellstack.org/ | sh
+  when: not stack_stat.stat.exists
+  register: install_stack
+  failed_when: install_stack.rc not in [0, 1]
+
+- name: Initialize haskell-stack
+  command: /usr/local/bin/stack path
