@@ -3,6 +3,9 @@
   command: cabal update
   changed_when: false
 
+- name: Install happy with cabal
+  command: cabal install happy
+
 - name: Install cabal packages
   command: cabal install
     {{ (cabal_packages + cabal_packages_extra)
