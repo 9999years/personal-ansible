@@ -37,9 +37,12 @@
     dest: '{{ rebeccastyle_repo.dest }}'
 
 - name: Install rebeccastyle
+  # Needs `sd` and `just`.
   command: 'just install {{ user_texmf_root }}'
   args:
     chdir: '{{ rebeccastyle_repo.dest }}'
+  environment:
+    PATH: '{{ cargo_bin_dir }}:{{ ansible_env.PATH }}'
 
 - name: Register user TEXMF root {{ user_texmf_root }}
   when: false

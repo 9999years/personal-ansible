@@ -109,6 +109,7 @@ homebrew_links:
     - python3.7
     - pip3
     - pip3.7
+    - just
 
 pip_bin: '{{ homebrew_bin_dir }}/pip3'
 pip_packages:
@@ -195,6 +196,10 @@ stack_packages_extra: []
 stack_packages:
   - hdevtools
   - stylish-haskell
+
+stack_global_extra_deps: |
+  extra-deps:
+    - haskell-src-exts-1.20.3@sha256:83ae523bbec907a42c043de1f5bbf4c1554e7c3b898af07bb1ce6e80eaa282ec,4589
 
 install_hub: false
 hub_version: 2.11.2
@@ -397,7 +402,3 @@ dhall_packages:
     creates: dhall-to-nix
     ver: 1.1.8
 dhall_url_prefix: https://github.com/{{ dhall_repo }}/releases/download/{{ dhall_version }}
-
-stack_global_extra_deps: |
-  extra-deps:
-    - haskell-src-exts-1.20.3@sha256:83ae523bbec907a42c043de1f5bbf4c1554e7c3b898af07bb1ce6e80eaa282ec,4589

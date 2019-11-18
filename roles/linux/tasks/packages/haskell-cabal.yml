@@ -6,4 +6,4 @@
 - name: Install cabal packages
   command: cabal install
     {{ (cabal_packages + cabal_packages_extra)
-      |reject('in', cabal_packages_skip)|join(', ') }}
+      |reject('in', cabal_packages_skip)|join(' ') }}
