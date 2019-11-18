@@ -79,6 +79,7 @@ apt_packages:
     - gitk
       # programming languages
     - ghc
+    - cabal-install
     - perl
     - golang
 
