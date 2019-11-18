@@ -154,7 +154,16 @@
       - haskell
       - ghc
       - stack
+      - haskell-stack
   import_tasks: haskell-stack.yml
+
+- name: Install haskell cabal tools
+  tags:
+      - haskell
+      - ghc
+      - cabal
+      - cabal-install
+  import_tasks: haskell-cabal.yml
 
 - name: Install haskell-ide-engine
   tags:

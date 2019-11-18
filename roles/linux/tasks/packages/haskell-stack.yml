@@ -10,7 +10,23 @@
   shell: curl -sSL https://get.haskellstack.org/ | sh
   when: not stack_stat.stat.exists
   register: install_stack
+  # 1 means already installed... maybe other things also. Shrug.
   failed_when: install_stack.rc not in [0, 1]
 
 - name: Initialize haskell-stack
-  command: /usr/local/bin/stack path
+  command: stack path
+
+- name: Get stack config
+  register: stack_config
+  command: stack path --config-location
+  changed_when: false
+
+- name: Make sure that global stack package has proper extra-deps
+  blockinfile:
+    path: '{{ stack_config.stdout }}'
+    block: '{{ stack_global_extra_deps }}'
+
+- name: Install stack packages
+  command: stack install
+    {{ (stack_packages + stack_packages_extra)
+      |reject('in', stack_packages_skip)|join(', ') }}

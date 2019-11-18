@@ -180,6 +180,22 @@ npm_ext: .tar.xz
 npm_url: https://nodejs.org/dist/{{ npm_version -}}
             /node-{{ npm_version }}-{{ npm_arch }}{{ npm_ext}}
 
+cabal_packages_skip: []
+cabal_packages_extra: []
+cabal_packages:
+  - happy  # required by other stuff, don't remove.
+  - pointfree
+  - hlint
+  - apply-refact
+  - hspec
+  - hindent
+
+stack_packages_skip: []
+stack_packages_extra: []
+stack_packages:
+  - hdevtools
+  - stylish-haskell
+
 install_hub: false
 hub_version: 2.11.2
 hub_arch: linux-amd64
@@ -382,4 +398,6 @@ dhall_packages:
     ver: 1.1.8
 dhall_url_prefix: https://github.com/{{ dhall_repo }}/releases/download/{{ dhall_version }}
 
-
+stack_global_extra_deps: |
+  extra-deps:
+    - haskell-src-exts-1.20.3@sha256:83ae523bbec907a42c043de1f5bbf4c1554e7c3b898af07bb1ce6e80eaa282ec,4589

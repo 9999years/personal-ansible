@@ -3,3 +3,5 @@
   hosts: all
   roles:
     - linux
+  environment:
+    PATH: /usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
