@@ -1,0 +1,41 @@
+---
+dotfiles_repo:
+    git: https://github.com/9999years/dotfiles.git
+    dest: ~/.dotfiles
+dotfiles:
+    - .bash_profile
+    - .bashrc
+    - .curlrc
+    - .fonts.conf
+    - .gitattributes_global
+    - .gitconfig
+    - .gitignore_global
+    - .latexmkrc
+    - .minttyrc
+    - .pip.conf
+    - .ptpython/config.py
+    - .pythonrc
+    - .tmux.conf
+    - .tmux.conf.sh
+    - .Xresources
+    - .youtube-dl.conf
+    - .config/fish/config.fish
+    - .config/fish/functions
+    - .config/fisher_local/fishfile
+dotfiles_skip: []
+dotfiles_extra: []
+
+symlinks: []
+
+vimfiles:
+    repo: https://github.com/9999years/vimfiles.git
+    dest: '{{ ansible_user_dir }}/.config/nvim'
+    orig_dest: '{{ ansible_user_dir }}/.vim'
+
+chsh: true
+chsh_shell: '{{ fish_bin }}'
+chsh_bin: chsh {{ ansible_user_id }} --shell
+
+neovim_win_root: /mnt/c/tools/neovim/Neovim
+neovim_win_bin_dir: '{{ neovim_win_root }}/bin'
+neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'

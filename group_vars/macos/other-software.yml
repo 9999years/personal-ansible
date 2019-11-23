@@ -1,0 +1,27 @@
+---
+homebrew_packages_extra:
+  - neovim
+  - tmux
+  - ag
+  - colordiff
+  - source-highlight
+  - pandoc
+  - sshfs
+  - lftp
+  - git-lfs
+  - ruby
+  - ruby-dev
+  - openjdk
+  - vim
+  - shellcheck
+  - cloc
+  - ghostscript
+  - imagemagick
+  - graphviz
+  - pdftk-java
+  - tig
+  - ghc
+  - cabal-install
+  - golang
+  - fd
+  - alacritty

@@ -1,40 +1,4 @@
 ---
-initial_setup: false
-ansible_connection: local
-user: '{{ ansible_hostname }}'
-has_root: true
-is_wsl: '{{ "Microsoft" in ansible_kernel or "Windows" in ansible_kernel }}'
-
-local_prefix: /usr/local
-
-dotfiles_repo:
-    git: https://github.com/9999years/dotfiles.git
-    dest: ~/.dotfiles
-dotfiles:
-    - .bash_profile
-    - .bashrc
-    - .curlrc
-    - .fonts.conf
-    - .gitattributes_global
-    - .gitconfig
-    - .gitignore_global
-    - .latexmkrc
-    - .minttyrc
-    - .pip.conf
-    - .ptpython/config.py
-    - .pythonrc
-    - .tmux.conf
-    - .tmux.conf.sh
-    - .Xresources
-    - .youtube-dl.conf
-    - .config/fish/config.fish
-    - .config/fish/functions
-    - .config/fisher_local/fishfile
-dotfiles_skip: []
-dotfiles_extra: []
-
-symlinks: []
-
 apt_packages_skip: []
 apt_packages_extra: []
 
@@ -77,6 +41,7 @@ apt_packages:
     # - pdftk
       # git
     - gitk
+    - tig
       # programming languages
     - ghc
     - cabal-install
@@ -167,20 +132,6 @@ npm_packages:  # node_packages
 npm_packages_skip: []
 npm_packages_extra: []
 
-install_nodejs: true
-nodejs_gpg_key: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-nodejs_version_num: '13'
-nodejs_version: node_{{ nodejs_version_num }}.x
-
-bootstrap_npm: false
-npm_install_become: true
-npm_bin: /usr/bin/npm
-npm_version: v10.16.0
-npm_arch: linux-x64
-npm_ext: .tar.xz
-npm_url: https://nodejs.org/dist/{{ npm_version -}}
-            /node-{{ npm_version }}-{{ npm_arch }}{{ npm_ext}}
-
 cabal_packages_skip: []
 cabal_packages_extra: []
 cabal_packages:
@@ -200,37 +151,6 @@ stack_packages:
 stack_global_extra_deps: |
   extra-deps:
     - haskell-src-exts-1.20.3@sha256:83ae523bbec907a42c043de1f5bbf4c1554e7c3b898af07bb1ce6e80eaa282ec,4589
-
-install_hub: false
-hub_version: 2.11.2
-hub_arch: linux-amd64
-hub_top_dir: hub-{{ hub_arch }}-{{ hub_version}}
-hub_url: https://github.com/github/hub/releases/download/v{{ hub_version -}}
-        /{{ hub_top_dir }}.tgz
-
-# use gcm during the dotfiles and vimfiles git repo cloning?
-bootstrap_gcm: true
-
-# install gcm separately
-install_gcm: false
-gcm_version: 2.0.4
-gcm_dest: '{{ local_prefix }}/bin/git-credential-manager-{{ gcm_version }}.jar'
-gcm_shim_dest: '{{ local_prefix }}/bin/git-credential-manager'
-gcm_url: >-
-    https://github.com/Microsoft/Git-Credential-Manager-for-Mac-and-Linux
-    {#-#}/releases/download/git-credential-manager-{{ gcm_version -}}
-    /git-credential-manager-{{ gcm_version }}.jar
-
-vimfiles:
-    repo: https://github.com/9999years/vimfiles.git
-    dest: '{{ ansible_user_dir }}/.config/nvim'
-    orig_dest: '{{ ansible_user_dir }}/.vim'
-
-install_rust: true
-rustup_arch: x86_64-unknown-linux-gnu
-rustup_url: https://static.rust-lang.org/rustup/dist/{{ rustup_arch }}/rustup-init
-cargo_bin_dir: '{{ ansible_user_dir }}/.cargo/bin'
-cargo_bin: '{{ cargo_bin_dir }}/cargo'
 
 # https://github.com/rust-unofficial/awesome-rust#applications
 cargo_packages:
@@ -319,86 +239,3 @@ cargo_packages:
   # https://github.com/racer-rust/racer
   # - toolchain: nightly
     # crate: racer
-
-fish_version: 3.0.2
-fish_bin: '{{ homebrew_bin_dir }}/fish'
-fisher_url: https://git.io/fisher
-fisher_dir: '{{ ansible_user_dir }}/.config/fish/functions'
-fisher: '{{ fisher_dir }}/fisher.fish'
-
-install_talisman: true
-talisman_url: https://raw.githubusercontent.com/thoughtworks/talisman/master/global_install_scripts/install.bash
-pre_commit_tpl: '{{ ansible_user_dir }}/.git-template/hooks/pre-commit'
-
-tpm: '{{ ansible_user_dir }}/.tmux/plugins/tpm'
-tpm_url: https://github.com/tmux-plugins/tpm
-
-install_sass: true
-sass_version: 1.20.2
-sass_arch: linux-x64
-sass_url: https://github.com/sass/dart-sass/releases/download/
-    {{- sass_version }}/dart-sass-{{ sass_version }}-{{ sass_arch }}.tar.gz
-sass_dest: '{{ local_prefix }}/libexec'
-sass_bin_dir: '{{ sass_dest }}/dart-sass'
-sass_link_dir: '{{ local_prefix }}/bin'
-
-neovim_win_root: /mnt/c/tools/neovim/Neovim
-neovim_win_bin_dir: '{{ neovim_win_root }}/bin'
-neovim_win32yank: '{{ neovim_win_bin_dir }}/win32yank.exe'
-
-install_hexd: false
-install_pixd: false
-
-install_texlive: false
-install_miktex: true
-miktex_gpg_key: D6BC243565B2087BC3F897C9277A7293F59E4889
-miktex_apt_repo: deb http://miktex.org/download/ubuntu bionic universe
-miktex_mpm_bin: /usr/bin/mpm
-
-# Options: 'essential', 'basic', 'complete'
-miktex_package_level: basic
-user_texmf_root: '{{ ansible_user_dir }}/.miktex/texmfs/install'
-
-bootstrap_pip: false
-bootstrap_pip_url: https://bootstrap.pypa.io/get-pip.py
-python_bin: '{{ local_prefix }}/bin/python3.7'
-
-chsh: true
-chsh_shell: '{{ fish_bin }}'
-chsh_bin: chsh {{ ansible_user_id }} --shell
-
-fd_version: '7.4.0'
-fd_arch: amd64
-fd_deb: https://github.com/sharkdp/fd/releases/download/v{{ fd_version }}/fd_{{ fd_version }}_{{ fd_arch }}.deb
-fd_bin: /usr/bin/fd
-
-install_alacritty: false
-alacritty_url: https://github.com/jwilm/alacritty.git
-
-rebeccastyle_repo:
-    git: https://github.com/9999years/rebeccaessay
-    dest: '{{ ansible_user_dir }}/projects/rebeccastyle'
-
-microsoft_deb: https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
-
-dhall_repo: dhall-lang/dhall-haskell
-dhall_arch: x86_64
-dhall_platform: linux
-dhall_archive_ext: tar.bz2
-dhall_ext: '{{ dhall_arch }}-{{ dhall_platform }}.{{ dhall_archive_ext }}'
-dhall_version: 1.26.1
-dhall_packages:
-  - name: dhall
-    ver: 1.26.1
-  - name: dhall-bash
-    creates: dhall-to-bash
-    ver: 1.0.23
-  - name: dhall-json
-    creates: dhall-to-json
-    ver: 1.4.1
-  - name: dhall-lsp-server
-    ver: 1.0.1
-  - name: dhall-nix
-    creates: dhall-to-nix
-    ver: 1.1.8
-dhall_url_prefix: https://github.com/{{ dhall_repo }}/releases/download/{{ dhall_version }}
