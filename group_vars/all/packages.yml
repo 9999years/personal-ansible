@@ -114,8 +114,11 @@ pip_packages:
     - vim-vint  # vimscript lint: https://github.com/Kuniwak/vint
 
 ruby_gems:
+    - bundler
     - neovim  # MIT
     - uniscribe  # MIT
+    - solargraph  # Ruby LSP
+    # - sorbet-static  # Ruby type-checker
 
 npm_packages:  # node_packages
     - npm
