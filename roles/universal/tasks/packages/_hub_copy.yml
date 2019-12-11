@@ -1,5 +1,6 @@
 ---
 # included by hub.yml
+# Loop var: hub_file
 - name: Ensure /usr/local/{{ hub_file|dirname }} exists
   become: true
   when: "'/' in hub_file"

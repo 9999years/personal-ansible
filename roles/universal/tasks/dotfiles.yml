@@ -37,24 +37,18 @@
       state: absent
       path: '{{ ansible_user_dir }}/.gitconfig'
 
-- name: Create dotfiles directories
-  become: true
-  become_user: '{{ user }}'
-  loop: '{{ dotfiles + dotfiles_extra }}'
-  when: "'/' in item and item not in dotfiles_skip"
-  file:
-      path: '{{ ansible_user_dir }}/{{ item|dirname }}'
-      state: directory
-      owner: '{{ user }}'
+- vars:
+    link_dotfiles: '{{ link_dotfiles_raw.stdout | from_json }}'
+  block:
+    - name: Link dotfiles
+      become: true
+      become_user: '{{ user }}'
+      args:
+        chdir: '{{ dotfiles_repo.dest }}'
+      command: ./setup.py
+      register: link_dotfiles_raw
+      changed_when: link_dotfiles.changed
+      failed_when: link_dotfiles_raw.rc != 0 or link_dotfiles.failed
 
-- name: Link dotfiles
-  become: true
-  become_user: '{{ user }}'
-  loop: '{{ dotfiles + dotfiles_extra }}'
-  when: item not in dotfiles_skip
-  file:
-      path: '{{ ansible_user_dir }}/{{ item }}'
-      src: '{{ dotfiles_repo.dest }}/{{ item }}'
-      state: link
-      force: true # clobber
-      owner: '{{ user }}'
+    - debug:
+        var: link_dotfiles.files
