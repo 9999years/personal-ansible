@@ -37,6 +37,7 @@ apt_packages:
     - toilet  # command-line ascii art generator
     - libclang-dev  # 0.5gb :(
     - zlib1g-dev  # Required for cargo-update
+    - libssl-dev  # Required for fw
     # - reptyer
     # - pdftk
       # git
@@ -155,6 +156,7 @@ stack_global_extra_deps: |
   extra-deps:
     - haskell-src-exts-1.20.3@sha256:83ae523bbec907a42c043de1f5bbf4c1554e7c3b898af07bb1ce6e80eaa282ec,4589
 
+cargo_force_update: false
 # https://github.com/rust-unofficial/awesome-rust#applications
 cargo_packages:
   - --git https://github.com/darakian/ddh ddh

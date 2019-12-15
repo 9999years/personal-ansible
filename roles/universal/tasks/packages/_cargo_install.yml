@@ -1,0 +1,40 @@
+---
+# Included by rust.yml.
+# Loop variable: cargo_install_item
+
+- name: Install Cargo binary {{ cargo_install_item.crate|default(cargo_install_item) }}
+  # The 'fw' crate calls 'pkg-config', and only the linuxbrew copy of
+  # pkg-config knows where OpenSSL is sometimes.
+  environment:
+    PATH: '{{ homebrew_bin_dir }}:{{ ansible_env.PATH }}'
+  command: >-
+    {{ cargo_bin_dir }}/cargo
+    {{ ('+' + cargo_install_item.toolchain|d('')).rstrip('+') }}
+    install
+    {% if cargo_force_update -%}
+      --force
+    {%- endif %}
+    {{ cargo_install_item.crate|default(cargo_install_item) }}
+  register: cargo_install
+  failed_when: cargo_install.rc != 0
+    and not (cargo_install.rc == 101
+            and cargo_install.stderr.endswith('Add --force to overwrite'))
+  # cargo_install.stderr_lines[-1] is a string like:
+  #   Replaced package `funzzy v0.3.3` with `funzzy v0.3.3` (executable `funzzy`)
+  # which, after .strip().split('`'), looks like:
+  #   ['Replaced package ', 'funzzy v0.3.3', ' with ', 'funzzy v0.3.3', ' (executable ', 'funzzy', ')']
+  # so we check the 2nd and 4th items to see if we changed a version.
+  vars:
+    last_line: >-
+      {{ cargo_install
+        .stderr_lines[-1]
+        .strip()
+        .split('`') }}
+  changed_when: cargo_install is not failed
+    and last_line|length >= 4
+    and last_line[1] != last_line[3]
+
+- name: Log Cargo version diffs
+  when: cargo_install.changed
+  debug:
+    msg: '{{ cargo_install.stderr_lines[-1].strip() }}'
