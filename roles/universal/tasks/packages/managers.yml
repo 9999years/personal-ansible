@@ -35,19 +35,12 @@
   when: install_homebrew|bool
   become: true
   become_user: '{{ user }}'
-  vars:
-      # Spurious error
-      # https://github.com/microsoft/WSL/issues/1838
-      nice_warning: 'nice: cannot set niceness: Permission denied'
   homebrew:
       state: latest
       package: "{{ homebrew_install }}"
       path: '{{ homebrew_bin_dir }}'
       update_homebrew: true
       upgrade_all: true
-  register: brew_install
-  failed_when: brew_install is failed
-          and (brew_install.msg|replace(nice_warning, '')).strip() != ''
 
 - name: Link Linuxbrew binaries to /usr/local/bin
   tags:
