@@ -1,6 +1,7 @@
 ---
-- debug:
-    msg: "Installing apt packages: {{ apt_packages_essential|reject('in', apt_packages_skip)|join(', ') }}"
+- name: Log apt packages to be installed
+  debug:
+    var: apt_packages_essential|reject('in', apt_packages_skip)|list
 
 - name: Install apt packages (essential)
   become: true
@@ -16,6 +17,16 @@
   apt:
       name: "{{ (apt_packages + apt_packages_extra)|reject('in', apt_packages_skip)|list }}"
 
+- name: Calculate Linuxbrew packages to be installed
+  set_fact:
+    homebrew_install: >-
+      {{ (homebrew_packages + homebrew_packages_extra)
+      |reject('in', homebrew_packages_skip)|list }}
+
+- name: Log Linuxbrew packages to be installed
+  debug:
+    var: homebrew_install
+
 - name: Install/upgrade Linuxbrew packages
   tags:
       - brew
@@ -30,7 +41,7 @@
       nice_warning: 'nice: cannot set niceness: Permission denied'
   homebrew:
       state: latest
-      package: "{{ (homebrew_packages + homebrew_packages_extra)|reject('in', homebrew_packages_skip)|list }}"
+      package: "{{ homebrew_install }}"
       path: '{{ homebrew_bin_dir }}'
       update_homebrew: true
       upgrade_all: true
@@ -54,12 +65,20 @@
       path: '/usr/local/bin/{{ item }}'
       mode: 0755
 
+- name: Log Pip packages to be installed
+  debug:
+    var: pip_packages
+
 - name: Install pip packages
   become: true
   pip:
       executable: '{{ pip_bin }}'
       name: '{{ pip_packages }}'
       state: latest
+
+- name: Log Ruby gems to be installed
+  debug:
+    var: ruby_gems
 
 - name: Install Ruby Gems
   become: true
@@ -69,12 +88,22 @@
       state: latest
       user_install: false
 
+- name: Calculate npm packages to be installed
+  set_fact:
+    npm_install: >-
+      {{ (npm_packages + npm_packages_extra)
+      |reject('in', npm_packages_skip)|list }}
+
+- name: Log npm packages to be installed
+  debug:
+    var: npm_install
+
 - name: Install Node (npm) packages
   become: '{{ npm_install_become|bool }}'
   tags:
       - node
       - npm
-  loop: "{{( npm_packages + npm_packages_extra)|reject('in', npm_packages_skip)|list }}"
+  loop: "{{ npm_install }}"
   when: item not in npm_packages_skip
   npm:
       executable: '{{ npm_bin }}'

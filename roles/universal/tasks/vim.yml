@@ -26,6 +26,6 @@
   become: true
   become_user: '{{ user }}'
   file:
-          path: '{{ vimfiles.orig_dest }}'
-          src: '{{ vimfiles.dest }}'
-          state: link
+      path: '{{ vimfiles.orig_dest }}'
+      src: '{{ vimfiles.dest }}'
+      state: link

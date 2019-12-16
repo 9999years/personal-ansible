@@ -6,7 +6,7 @@ dotfiles_repo:
 vimfiles:
     repo: https://github.com/9999years/vimfiles.git
     dest: '{{ ansible_user_dir }}/.config/nvim'
-    orig_dest: '{{ ansible_user_dir }}/.vim'
+    orig_dest: '{{ ansible_user_dir }}/.vim/nvim'
 
 chsh: true
 chsh_shell: '{{ fish_bin }}'
