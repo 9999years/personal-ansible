@@ -85,8 +85,15 @@
   tags:
       - packages
       - rust
-      - cargo
   import_tasks: rust.yml
+
+- name: Install Rust  # Apache 2.0 & MIT (dual-licensed)
+  when: install_rust|bool
+  tags:
+      - packages
+      - rust
+      - cargo
+  import_tasks: cargo.yml
 
 - name: Install Talisman (github.com/thoughtworks/talisman)  # MIT
   when: install_talisman|bool

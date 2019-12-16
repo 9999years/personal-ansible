@@ -1,0 +1,48 @@
+---
+- name: Check for cargo-update
+  command: which cargo-install-update
+  register: cargo_update_bin
+  failed_when: cargo_update_bin.rc not in [0, 1]
+  changed_when: cargo_update_bin.rc == 1
+
+- name: Install cargo-update
+  when: cargo_update_bin is changed
+  vars:
+    cargo_install_item: cargo-update
+  include_tasks: _cargo_install.yml
+
+- name: Install Cargo binaries (from git remotes)
+  loop: '{{ cargo_packages|selectattr("git", "defined")|list }}'
+  loop_control:
+    loop_var: cargo_install_item
+  include_tasks: _cargo_install.yml
+
+- name: Determine Cargo packages that need updates
+  command: >-
+    {{ cargo_bin_dir }}/cargo
+    install-update
+    --allow-no-update
+    --git
+    --all
+    --list
+    {{ cargo_packages|rejectattr('git', 'defined')|join(' ') }}
+  register: cargo_update_check
+  changed_when: false
+
+- name: Register Cargo update plan
+  set_fact:
+    update_plan: '{{ cargo_update_check.stdout_lines|cargo_update_planned }}'
+
+- name: Log Cargo update plan
+  debug: var=update_plan
+
+- name: Install/update Cargo binaries (from crates.io)
+  when: update_plan|length > 0
+  command: >-
+    {{ cargo_bin_dir }}/cargo
+    install-update
+    --allow-no-update
+    --git
+    --all
+    {{ cargo_packages|rejectattr('git', 'defined')|join(' ') }}
+  register: cargo_update

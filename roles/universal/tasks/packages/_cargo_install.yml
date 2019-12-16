@@ -9,12 +9,16 @@
     PATH: '{{ homebrew_bin_dir }}:{{ ansible_env.PATH }}'
   command: >-
     {{ cargo_bin_dir }}/cargo
-    {{ ('+' + cargo_install_item.toolchain|d('')).rstrip('+') }}
-    install
-    {% if cargo_force_update -%}
-      --force
+    {% if cargo_install_item.toolchain is defined -%}
+      +{{ cargo_install_item.toolchain }}
     {%- endif %}
-    {{ cargo_install_item.crate|default(cargo_install_item) }}
+    install
+    {% if cargo_install_item.git is defined -%}
+      --git {{ cargo_install_item.git }}
+      {{ cargo_install_item.crate|default('') }}
+    {%- else -%}
+      {{ cargo_install_item }}
+    {%- endif %}
   register: cargo_install
   failed_when: cargo_install.rc != 0
     and not (cargo_install.rc == 101

@@ -66,11 +66,3 @@
 
 # - name: Install rust-analyzer
   # import_tasks: rust-analyzer.yml
-
-- name: Install Cargo binaries
-  tags:
-    - cargo
-  loop: '{{ cargo_packages }}'
-  loop_control:
-    loop_var: cargo_install_item
-  include_tasks: _cargo_install.yml

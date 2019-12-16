@@ -71,10 +71,6 @@ homebrew_packages_skip: []
 homebrew_links:
     - git-credential-manager
     - fish
-    - python3
-    - python3.7
-    - pip3
-    - pip3.7
     - just
 
 pip_bin: '{{ homebrew_bin_dir }}/pip3'
@@ -159,8 +155,10 @@ stack_global_extra_deps: |
 cargo_force_update: false
 # https://github.com/rust-unofficial/awesome-rust#applications
 cargo_packages:
-  - --git https://github.com/darakian/ddh ddh
-  - --git https://github.com/lotabout/rargs rargs
+  - crate: ddh
+    git: https://github.com/darakian/ddh 
+  - git: https://github.com/lotabout/rargs
+    crate: rargs
   # cat(1) clone with syntax highlighting, prints non-printing characters with
   # -A, git integration, etc.
   # https://github.com/sharkdp/bat
@@ -228,7 +226,7 @@ cargo_packages:
   # "displays when newer versions of Rust dependencies are available, or out of
   # date"
   # https://github.com/kbknapp/cargo-outdated
-  - --git https://github.com/kbknapp/cargo-outdated
+  - git: https://github.com/kbknapp/cargo-outdated
   # https://github.com/sunng87/cargo-release
   - cargo-release
   # Dep tree.
@@ -240,7 +238,3 @@ cargo_packages:
   # Watches source files.
   # https://github.com/passcod/cargo-watch
   - cargo-watch
-  # Broken as of 2019-10-08.
-  # https://github.com/racer-rust/racer
-  # - toolchain: nightly
-    # crate: racer
