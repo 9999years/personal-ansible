@@ -1,0 +1,6 @@
+{% if is_wsl %}
+# Work around missing cgroups support https://github.com/Microsoft/WSL/issues/994
+sandbox = false
+# Work around incorrect file locking https://github.com/Microsoft/WSL/issues/2395
+use-sqlite-wal = false
+{% endif %}

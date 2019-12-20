@@ -1,0 +1,10 @@
+---
+- name: Check for Nix install
+  stat:
+    path: /nix
+  register: nix_stat
+  changed_when: not nix_stat.stat.exists
+
+- name: Install Nix.
+  when: nix_stat is changed
+  include_tasks: _nix_install.yml
