@@ -137,6 +137,12 @@
       - alacritty
   import_tasks: alacritty.yml
 
+- name: Install Nix
+  when: install_nix|bool
+  tags:
+      - nix
+  import_tasks: nix.yml
+
 - name: Install TeX Live
   when: install_texlive|bool
   tags:

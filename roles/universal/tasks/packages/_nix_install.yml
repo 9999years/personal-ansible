@@ -1,0 +1,30 @@
+---
+# Included by ./nix.yml
+- name: Create /etc/nix for nix.conf
+  become: true
+  file:
+    state: directory
+    mode: 0755
+    path: /etc/nix
+
+- name: Copy nix.conf
+  become: true
+  template:
+    src: nix.conf.jinja2
+    dest: /etc/nix/nix.conf
+    mode: 0644
+
+- name: Create temporary file for Nix install script
+  tempfile:
+    suffix: .sh
+  register: nix_install_script
+
+- name: Download Nix install script
+  get_url:
+    force: true
+    url: https://nixos.org/nix/install
+    dest: '{{ nix_install_script.path }}'
+    mode: 0755
+
+- name: Execute Nix install script
+  command: 'sh {{ nix_install_script.path }}'

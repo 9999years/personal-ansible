@@ -123,3 +123,5 @@ dhall_packages:
     creates: dhall-to-nix
     ver: 1.1.8
 dhall_url_prefix: https://github.com/{{ dhall_repo }}/releases/download/{{ dhall_version }}
+
+install_nix: true
