@@ -64,6 +64,7 @@ homebrew_packages:
     - hub  # MIT
     - nvim
     - just  # github.com/casey/just
+    - openssl@1.1
 
 homebrew_packages_extra: []
 homebrew_packages_skip: []

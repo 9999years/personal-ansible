@@ -1,19 +1,13 @@
 ---
-- name: Check for Git templates
-  stat:
-      path: '{{ pre_commit_tpl }}'
-  register: pre_commit
-  changed_when: not pre_commit.stat.exists
-
 - name: Check for Talisman pre-commit hook
-  when: pre_commit is not changed
   register: talisman_grep
   command: grep talisman {{ pre_commit_tpl }}
-  failed_when: talisman_grep.rc not in [0, 1]
-  changed_when: talisman_grep.rc == 1
+  # rc=2 => file not found
+  failed_when: talisman_grep.rc not in [0, 1, 2]
+  changed_when: talisman_grep.rc in [1, 2]
 
 - name: Install github.com/thoughtworks/talisman
-  when: pre_commit is changed or talisman_grep is changed
+  when: talisman_grep is changed
   block:
     - name: Create temporary file
       register: tmp_bash

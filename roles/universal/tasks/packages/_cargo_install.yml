@@ -3,10 +3,6 @@
 # Loop variable: cargo_install_item
 
 - name: Install Cargo binary {{ cargo_install_item.crate|default(cargo_install_item) }}
-  # The 'fw' crate calls 'pkg-config', and only the linuxbrew copy of
-  # pkg-config knows where OpenSSL is sometimes.
-  environment:
-    PATH: '{{ homebrew_bin_dir }}:{{ ansible_env.PATH }}'
   command: >-
     {{ cargo_bin_dir }}/cargo
     {% if cargo_install_item.toolchain is defined -%}
