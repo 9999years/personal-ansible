@@ -7,6 +7,7 @@ nix_bins: '{{ nix_profile }}/bin/'
 nix_env_bin: '{{ nix_bins }}/nix-env'
 
 npm_install_become: true
+npm_bin: '{{ nix_bins }}/npm'
 
 # https://github.com/Microsoft/Git-Credential-Manager-for-Mac-and-Linux
 # use gcm during the dotfiles and vimfiles git repo cloning?

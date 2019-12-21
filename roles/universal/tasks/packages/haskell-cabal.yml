@@ -7,6 +7,9 @@
   command: cabal install happy
 
 - name: Install cabal packages
+  vars:
+    cabal_to_install: "{{ (cabal_packages + cabal_packages_extra)
+      |reject('in', cabal_packages_skip)|list }}"
+  when: cabal_to_install|length > 0
   command: cabal install
-    {{ (cabal_packages + cabal_packages_extra)
-      |reject('in', cabal_packages_skip)|join(' ') }}
+    {{ cabal_to_install|join(' ') }}

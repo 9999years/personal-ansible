@@ -27,6 +27,8 @@
     block: '{{ stack_global_extra_deps }}'
 
 - name: Install stack packages
-  command: stack install
-    {{ (stack_packages + stack_packages_extra)
-      |reject('in', stack_packages_skip)|join(' ') }}
+  vars:
+    stack_to_install: "{{ (stack_packages + stack_packages_extra)
+      |reject('in', stack_packages_skip)|list }}"
+  when: stack_to_install|length > 0
+  command: stack install {{ stack_to_install|join(' ') }}

@@ -1,21 +1,23 @@
 ---
-- name: Check for Linuxbrew fish
-  stat:
-      path: '{{ fish_bin }}'
-  register: brew_fish
-  changed_when: brew_fish.stat.exists and brew_fish.stat.executable
+- when: chsh|bool
+  block:
+    - name: Check for Linuxbrew fish
+      stat:
+          path: '{{ fish_bin }}'
+      register: brew_fish
+      changed_when: brew_fish.stat.exists and brew_fish.stat.executable
 
-- name: Add Linuxbrew fish to /etc/shells
-  when: brew_fish is changed
-  become: true
-  lineinfile:
-      path: /etc/shells
-      line: '{{ fish_bin }}'
+    - name: Add Linuxbrew fish to /etc/shells
+      when: brew_fish is changed
+      become: true
+      lineinfile:
+          path: /etc/shells
+          line: '{{ fish_bin }}'
 
-- name: Change shell to {{ chsh_shell }}
-  when: brew_fish is changed and chsh|bool
-  become: true
-  command: '{{ chsh_bin }} {{ chsh_shell }}'
+    - name: Change shell to {{ chsh_shell }}
+      when: brew_fish is changed
+      become: true
+      command: '{{ chsh_bin }} {{ chsh_shell }}'
 
 - name: Link win32yank for Neovim
   when: is_wsl|bool

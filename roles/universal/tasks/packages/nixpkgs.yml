@@ -9,6 +9,10 @@
   command: >-
     {{ nix_bins }}/nix-channel
     --update
+  retries: 5
+  delay: 1
+  register: nix_channels_update
+  until: nix_channels_update.rc == 0
 
 - name: Log Nix packages to be installed
   debug:

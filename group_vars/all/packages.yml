@@ -92,6 +92,7 @@ nix_packages:
     - nixpkgs.tokei # Cloc, https://github.com/XAMPPRocky/tokei
     - nixpkgs.xsv # CSV data manipulation and analysis tool, https://github.com/BurntSushi/xsv
 
+    - nixpkgs.rustup
     - nixpkgs.cargo-deps # Generates a dep graph, https://github.com/m-cat/cargo-deps
     - nixpkgs.cargo-edit # https://github.com/killercup/cargo-edit
     - nixpkgs.cargo-update # https://github.com/nabijaczleweli/cargo-update
