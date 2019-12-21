@@ -4,7 +4,7 @@
 
 - name: Install Cargo binary {{ cargo_install_item.crate|default(cargo_install_item) }}
   command: >-
-    {{ cargo_bin_dir }}/cargo
+    {{ nix_bins }}/cargo
     {% if cargo_install_item.toolchain is defined -%}
       +{{ cargo_install_item.toolchain }}
     {%- endif %}

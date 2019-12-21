@@ -59,11 +59,32 @@
       mode: 0755
 
 - name: Log Pip packages to be installed
+  tags:
+      - python
+      - pip
   debug:
     var: pip_packages
 
 - name: Install pip packages
   become: true
+  tags:
+      - python
+      - pip
+  environment:
+      PATH: '{{ nix_bins }}:{{ ansible_env.PATH }}'
+
+      NIX_PATH: '{{ ansible_user_dir }}/.nix-defexpr/channels:{{ ansible_user_dir }}/.nix-defexpr/channels:{{ ansible_user_dir }}/.nix-defexpr/channels'
+      NIX_SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+      NIX_PROFILES: /nix/var/nix/profiles/default {{ nix_profile }}
+
+      CFLAGS: -I{{ ansible_user_dir }}/.local/include -I/usr/local/include
+      CPPFLAGS: -I{{ ansible_user_dir }}/.local/include -I/usr/local/include
+      C_INCLUDE_PATH: '{{ ansible_user_dir }}/.local/include:/usr/local/include'
+      LDFLAGS: -L{{ ansible_user_dir }}/.local/lib64 -L/usr/local/lib64 -L/lib64 -L/usr/lib64 -L{{ ansible_user_dir }}/.local/lib -L/usr/local/lib
+      LD_LIBRARY_PATH: '{{ ansible_user_dir }}/.local/lib64:/usr/local/lib64:/lib64:/usr/lib64:{{ ansible_user_dir }}/.local/lib:/usr/local/lib'
+      LD_RUN_PATH: '{{ ansible_user_dir }}/.local/lib64:/usr/local/lib64:/lib64:/usr/lib64'
+      LIBRARY_PATH: '{{ ansible_user_dir }}/.local/lib64:/usr/local/lib64:/lib64:/usr/lib64:{{ ansible_user_dir }}/.local/lib:/usr/local/lib'
+
   pip:
       executable: '{{ pip_bin }}'
       name: '{{ pip_packages }}'
@@ -77,6 +98,7 @@
   become: true
   loop: '{{ ruby_gems }}'
   gem:
+      executable: '{{ nix_bins }}/gem'
       name: '{{ item }}'
       state: latest
       user_install: false

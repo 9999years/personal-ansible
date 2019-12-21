@@ -3,53 +3,12 @@ apt_packages_skip: []
 apt_packages_extra: []
 
 apt_packages_essential:
-      # editors
-    - neovim  # Apache 2.0
-      # shell utilities / dev tools
     - build-essential
-    - tmux  # ISC License
-    - silversearcher-ag  # Apache 2.0
-    - colordiff  # GPL v3
-    - colortest
-    - source-highlight  # GPL v3
-    - pandoc  # GLP v2+ & BSD 3-clause & MIT & WTFPL (dzslides)
-    - sshfs  # GPL v2
-    - lftp  # GPL v3+
-      # git
-    - git  # GPL v2
-    - git-lfs  # MIT
-      # programming languages
-    - openjdk-11-jdk  # GPL v2
-    - ruby  # BDS 2-clause
-    - ruby-dev
 
 apt_packages:
-      # editors
-    - vim  # GPL-compatible
-    # - vim-gtk
-      # shell utilities / dev tools
-    - linuxbrew-wrapper
-    - shellcheck  # GPL v3
-    - cloc  # GPL v2 & Artistic License
-    - ghostscript
-    - imagemagick  # Derived Apache 2.0
-    - graphviz  # CPL 1.0
-    - toilet  # command-line ascii art generator
-    - libclang-dev  # 0.5gb :(
-    - zlib1g-dev  # Required for cargo-update
     - libssl-dev  # Required for fw
-    # - reptyer
-    # - pdftk
-      # git
-    - gitk
-    - tig
-      # programming languages
-    - ghc
-    - cabal-install
-    - perl
-    - golang
 
-install_homebrew: true
+install_homebrew: false
 homebrew_install: https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
 homebrew_root: /home/linuxbrew/.linuxbrew
 homebrew_bin: '{{ homebrew_root }}/Homebrew/bin/brew'
@@ -57,25 +16,128 @@ homebrew_bin_dir: '{{ homebrew_root }}/bin'
 
 homebrew_packages:
     - git-credential-manager  # MIT
-    - fish  # GPL v2 & LGPL v2, OpenBSD License, ISC, NetBSD
-    - python  # GPL-compatible PSF; https://docs.python.org/3/license.html
-    - fzf  # MIT
-    - jq  # MIT
-    - hub  # MIT
-    - nvim
-    - just  # github.com/casey/just
-    - openssl@1.1
 
 homebrew_packages_extra: []
 homebrew_packages_skip: []
 
 homebrew_links:
     - git-credential-manager
-    - fish
-    - just
 
-pip_bin: '{{ homebrew_bin_dir }}/pip3'
+nix_channels:
+  - url: 'https://hydra.dhall-lang.org/jobset/dhall-haskell/master/channel/latest'
+    name: dhall-haskell-master-latest
+nix_packages:
+    - nixpkgs.python38Full
+    - nixpkgs.python38Packages.pip
+    - nixpkgs.python38Packages.setuptools
+    - nixpkgs.python38Packages.virtualenv
+    - nixpkgs.python38Packages.pytest
+    - nixpkgs.python38Packages.black
+    - nixpkgs.python38Packages.grip
+    - nixpkgs.python38Packages.mypy
+    - nixpkgs.python38Packages.flake8
+    - nixpkgs.python38Packages.ptpython
+    - nixpkgs.python38Packages.pycodestyle
+    - nixpkgs.python38Packages.pylint
+
+    - nixpkgs.gitAndTools.gitFull  # GPL v2
+    - nixpkgs.git-lfs  # MIT
+    - nixpkgs.gitAndTools.hub  # github hub, MIT
+    - nixpkgs.gitAndTools.diff-so-fancy
+    - nixpkgs.bfg-repo-cleaner
+
+    - nixpkgs.fish  # GPL v2 & LGPL v2, OpenBSD License, ISC, NetBSD
+    - nixpkgs.neovim
+    - nixpkgs.tmux  # ISC License
+
+    - nixpkgs.silver-searcher
+    - nixpkgs.fzf  # MIT
+    - nixpkgs.jq  # MIT
+    - nixpkgs.exa
+    - nixpkgs.just  # github.com/casey/just
+    - nixpkgs.topgrade
+    - nixpkgs.bat  # https://github.com/sharkdp/bat
+    - nixpkgs.bingrep # Binary introspection, https://github.com/m4b/bingrep
+    - nixpkgs.fselect # "Find files with SQL-like queries" https://github.com/jhspetersson/fselect
+    - nixpkgs.hyperfine
+    - nixpkgs.ruplacer
+    - nixpkgs.ripgrep  # rg, https://github.com/BurntSushi/ripgrep
+    - nixpkgs.ripgrep-all
+    - nixpkgs.sd # Find-and-replacer, https://github.com/chmln/sd
+    - nixpkgs.skim # Fuzzy finder, https://github.com/lotabout/skim
+    - nixpkgs.tokei # Cloc, https://github.com/XAMPPRocky/tokei
+    - nixpkgs.xsv # CSV data manipulation and analysis tool, https://github.com/BurntSushi/xsv
+
+    - nixpkgs.cargo-deps # Generates a dep graph, https://github.com/m-cat/cargo-deps
+    - nixpkgs.cargo-edit # https://github.com/killercup/cargo-edit
+    - nixpkgs.cargo-update # https://github.com/nabijaczleweli/cargo-update
+    - nixpkgs.cargo-watch # Watches source files, https://github.com/passcod/cargo-watch
+    - nixpkgs.cargo-tree # Dep tree. https://github.com/sfackler/cargo-tree
+    - nixpkgs.cargo-release # https://github.com/sunng87/cargo-release
+    - nixpkgs.cargo-outdated # https://github.com/kbknapp/cargo-outdated
+    - nixpkgs.cargo-make # https://github.com/sagiegurari/cargo-make
+
+    - nixpkgs.stylish-haskell
+    - nixpkgs.hlint
+    - nixpkgs.haskellPackages.happy
+    - nixpkgs.haskellPackages.pointfree
+    - nixpkgs.haskellPackages.apply-refact
+    # - nixpkgs.haskellPackages.hie-core  # broken 2019-12-21
+    - nixpkgs.haskellPackages.hspec
+    - nixpkgs.haskellPackages.hindent
+    - nixpkgs.haskellPackages.hdevtools
+
+    - nixpkgs.solargraph  # ruby LSP
+    - nixpkgs.vim-vint  # vimscript lint: https://github.com/Kuniwak/vint
+    - nixpkgs.youtube-dl
+    - nixpkgs.sshfs-fuse  # GPL v2
+    - nixpkgs.lftp  # GPL v3+
+    - nixpkgs.pandoc  # GLP v2+ & BSD 3-clause & MIT & WTFPL (dzslides)
+    - nixpkgs.colordiff  # GPL v3
+    - nixpkgs.sourceHighlight  # GPL v3
+
+    - nixpkgs.clang
+    # - nixpkgs.llvmPackages.libclang
+    - nixpkgs.clang-tools
+    - nixpkgs.clang-analyzer
+
+    - nixpkgs.ruby  # BDS 2-clause
+    - nixpkgs.openjdk
+    - nixpkgs.shellcheck
+    - nixpkgs.ghostscript
+    - nixpkgs.imagemagick7Big  # Derived Apache 2.0
+    - nixpkgs.graphviz
+    - nixpkgs.toilet  # command-line ascii art generator
+    - nixpkgs.reptyr
+    - nixpkgs.tig  # git text-gui
+    - nixpkgs.ghc
+    - nixpkgs.cabal-install
+    - nixpkgs.stack
+    - nixpkgs.go
+    - nixpkgs.pdftk
+    - nixpkgs.perl  # If nothing else, latexmk needs it.
+
+    - nixpkgs.alacritty
+    - nixpkgs.fd
+    - nixpkgs.nodejs-13_x
+    - nixpkgs.tree
+
+    - nixpkgs.dhall
+    - nixpkgs.dhall-bash
+    - nixpkgs.dhall-json
+
+    - nixpkgs.zlib  # For pip Pillow
+
+    # - dhall-haskell-master-latest.linux-dhall
+    # - dhall-haskell-master-latest.linux-dhall-bash
+    # - dhall-haskell-master-latest.linux-dhall-json
+    # - dhall-haskell-master-latest.linux-dhall-lsp-server
+    # - dhall-haskell-master-latest.linux-dhall-nix
+    # - dhall-haskell-master-latest.linux-dhall-yaml
+
+pip_bin: '{{ nix_bins }}/pip3'
 pip_packages:
+    - setuptools
     - Pillow
     - PyYAML
     - Pygments
@@ -83,22 +145,13 @@ pip_packages:
     - atomicwrites
     - attrs
     - beautifulsoup4
-    - black
     - cached-property
     - cachetools
     - colorama
-    - grip
     - more-itertools
-    - mypy
     - neovim
-    - numba
     - numpy
-    - pep8
-    - ptpython
-    - pycodestyle
-    - pylint
     - pynvim
-    - pytest
     - python-dateutil
     - python-decouple
     - requests
@@ -108,8 +161,6 @@ pip_packages:
     - urllib3
     - virtualenv
     - wcwidth
-    - youtube-dl
-    - vim-vint  # vimscript lint: https://github.com/Kuniwak/vint
 
 ruby_gems:
     - bundler
@@ -135,19 +186,11 @@ npm_packages_extra: []
 
 cabal_packages_skip: []
 cabal_packages_extra: []
-cabal_packages:
-  - happy  # required by other stuff, don't remove.
-  - pointfree
-  - hlint
-  - apply-refact
-  - hspec
-  - hindent
+cabal_packages: []
 
 stack_packages_skip: []
 stack_packages_extra: []
-stack_packages:
-  - hdevtools
-  - stylish-haskell
+stack_packages: []
 
 stack_global_extra_deps: |
   extra-deps:
@@ -156,34 +199,13 @@ stack_global_extra_deps: |
 cargo_force_update: false
 # https://github.com/rust-unofficial/awesome-rust#applications
 cargo_packages:
-  - topgrade
   - crate: ddh
-    git: https://github.com/darakian/ddh 
+    git: https://github.com/darakian/ddh
   - git: https://github.com/lotabout/rargs
     crate: rargs
-  - bat  # requires libclang-dev; https://github.com/sharkdp/bat
-  - bingrep # Binary introspection, https://github.com/m4b/bingrep
-  - exa # ls replacement https://github.com/ogham/exa
-  - fselect # "Find files with SQL-like queries" https://github.com/jhspetersson/fselect
   - funzzy # https://github.com/cristianoliveira/funzzy
   - fw # https://github.com/brocode/fw
   - hx # Hexdump, https://github.com/sitkevij/hex
-  - hyperfine
-  - ripgrep  # rg, https://github.com/BurntSushi/ripgrep
   # - runiq  # requires cmake
-  - ruplacer
-  - sd # Find-and-replacer, https://github.com/chmln/sd
-  - find-files # https://github.com/vishaltelangre/ff
-  - skim # Fuzzy finder, https://github.com/lotabout/skim
-  - tokei # Cloc, https://github.com/XAMPPRocky/tokei
-  - xsv # CSV data manipulation and analysis tool, https://github.com/BurntSushi/xsv
-  - cargo-deps # Generates a dep graph, https://github.com/m-cat/cargo-deps
-  - cargo-edit # https://github.com/killercup/cargo-edit
-  - cargo-make # https://github.com/sagiegurari/cargo-make
+  - find-files  # https://github.com/vishaltelangre/ff
   # - cargo-modules  Requires nightly to *run* as of 0.4.4
-  # https://github.com/kbknapp/cargo-outdated
-  - git: https://github.com/kbknapp/cargo-outdated
-  - cargo-release # https://github.com/sunng87/cargo-release
-  - cargo-tree # Dep tree. https://github.com/sfackler/cargo-tree
-  - cargo-update # https://github.com/nabijaczleweli/cargo-update
-  - cargo-watch # Watches source files, https://github.com/passcod/cargo-watch

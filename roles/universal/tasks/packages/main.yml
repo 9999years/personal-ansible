@@ -1,20 +1,21 @@
 ---
+- name: Install Nix
+  when: install_nix|bool
+  tags:
+      - nix
+  import_tasks: nix.yml
+
+- name: Install Nix packages
+  tags:
+      - nix
+  import_tasks: nixpkgs.yml
+
 - name: Bootstrap Git-Credential-Manager (github.com/microsoft/Git-Credential-Manager-for-Mac-and-Linux)
   tags:
       - packages
       - gcm
   when: install_gcm|bool
   import_tasks: gcm.yml
-
-- name: Install GitHub hub (github.com/github/hub)
-  tags:
-    - package
-    - hub
-    - git
-    - github
-  when: install_hub|bool
-  become: true
-  import_tasks: hub.yml
 
 - name: Install Linuxbrew  # BSD 2-clause
   tags:
@@ -23,28 +24,7 @@
       - homebrew
       - linuxbrew
   import_tasks: linuxbrew.yml
-
-- name: Bootstrap pip
-  when: bootstrap_pip|bool
-  tags:
-      - pip
-      - packages
-  import_tasks: bootstrap_pip.yml
-
-- name: Install Node.js
-  tags:
-      - packages
-      - node
-      - nodejs
-      - npm
-  import_tasks: nodejs.yml
-
-- name: Bootstrap npm
-  when: bootstrap_npm|bool
-  tags:
-      - packages
-      - npm
-  import_tasks: bootstrap_npm.yml
+  when: install_homebrew|bool
 
 - name: Install packages & other software
   tags:
@@ -53,12 +33,6 @@
       - homebrew
       - linuxbrew
   import_tasks: managers.yml
-
-- name: Install Dhall (dhall-lang.org)
-  tags:
-    - packages
-    - dhall
-  import_tasks: dhall.yml
 
 - name: Install PowerShell
   tags:
@@ -102,33 +76,6 @@
       - talisman
   import_tasks: talisman.yml
 
-- name: Install hexd (github.com/FireyFly/hexd)  # MIT
-  when: install_hexd|bool
-  tags:
-      - packages
-      - hexd
-  import_tasks: hexd.yml
-
-- name: Install pixd (github.com/FireyFly/pixd)  # MIT
-  when: install_pixd|bool
-  tags:
-      - packages
-      - pixd
-  import_tasks: pixd.yml
-
-- name: Install dart-sass
-  when: install_sass|bool
-  tags:
-      - packages
-      - sass
-  import_tasks: sass.yml
-
-- name: Install fd
-  tags:
-    - packages
-    - fd
-  import_tasks: fd.yml
-
 - name: Install alacritty (github.com/jwilm/alacritty)
   when: install_alacritty|bool
   tags:
@@ -136,12 +83,6 @@
       - gui
       - alacritty
   import_tasks: alacritty.yml
-
-- name: Install Nix
-  when: install_nix|bool
-  tags:
-      - nix
-  import_tasks: nix.yml
 
 - name: Install TeX Live
   when: install_texlive|bool

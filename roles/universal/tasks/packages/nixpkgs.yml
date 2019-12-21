@@ -1,0 +1,22 @@
+- name: Add Nix channels
+  loop: '{{ nix_channels }}'
+  command: >-
+    {{ nix_bins }}/nix-channel
+    --add {{ item.url|quote }} {{ item.name|quote }}
+  changed_when: false
+
+- name: Update Nix channels
+  command: >-
+    {{ nix_bins }}/nix-channel
+    --update
+
+- name: Log Nix packages to be installed
+  debug:
+    var: nix_packages
+
+- name: Install Nix packages
+  command: >-
+    {{ nix_env_bin }}
+    --install
+    --attr
+    {{ nix_packages|join(' ') }}

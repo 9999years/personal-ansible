@@ -1,51 +1,13 @@
 ---
-- name: Check for Rust
-  register: rust_check
-  stat:
-      path: '{{ ansible_user_dir }}/.cargo/bin/rustup'
-  changed_when: not (rust_check.stat.exists and rust_check.stat.executable)
-
-- name: Install Rust
-  when: rust_check is changed
-  block:
-      - name: Create temporary file
-        # Create a directory because if `rustup-init` isn't named `rustup-init`
-        # it doesn't know what to do.
-        tempfile:
-            state: directory
-        register: rustup_tmp
-
-      - name: Download rustup-init
-        get_url:
-            url: '{{ rustup_url }}'
-            dest: '{{ rustup_tmp.path }}/rustup-init'
-            force: true
-            mode: 0755
-
-      - name: Execute rustup-init
-        command: >-
-            {{ rustup_tmp.path }}/rustup-init
-            --no-modify-path
-            -y
-
-- name: Ensure ~/.rustup is not owned by root
-  become: true
-  file:
-    path: '{{ ansible_user_dir }}/.rustup'
-    state: directory
-    recurse: true
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
-
 - name: Add Nightly Rust
   register: rustup_nightly
   changed_when: >-
     'installing' in rustup_nightly.stdout
   command: >-
-      {{ cargo_bin_dir }}/rustup toolchain add nightly
+      {{ nix_bins }}/rustup toolchain add nightly
 
 - name: Upgrade Rust
-  command: '{{ cargo_bin_dir }}/rustup update'
+  command: '{{ nix_bins }}/rustup update'
   register: rustup_update
   changed_when: >-
     'installing' in rustup_update.stdout
@@ -59,10 +21,7 @@
     - rustfmt
     - rls
     - rust-analysis
-  command: '{{ cargo_bin_dir }}/rustup component add {{ item }}'
+  command: '{{ nix_bins }}/rustup component add {{ item }}'
   register: rustup_component
   changed_when: >-
     'installing' in rustup_component.stdout
-
-# - name: Install rust-analyzer
-  # import_tasks: rust-analyzer.yml

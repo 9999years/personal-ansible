@@ -19,7 +19,7 @@
 
 - name: Determine Cargo packages that need updates
   command: >-
-    {{ cargo_bin_dir }}/cargo
+    {{ nix_bins }}/cargo
     install-update
     --allow-no-update
     --git
@@ -39,7 +39,7 @@
 - name: Install/update Cargo binaries (from crates.io)
   when: update_plan|length > 0
   command: >-
-    {{ cargo_bin_dir }}/cargo
+    {{ nix_bins }}/cargo
     install-update
     --allow-no-update
     --git
