@@ -28,6 +28,7 @@ nix_channels:
     name: dhall-haskell-master-latest
 nix_packages:
     - nixpkgs.python38Full
+    # Linters, etc.
     - nixpkgs.python38Packages.pip
     - nixpkgs.python38Packages.setuptools
     - nixpkgs.python38Packages.virtualenv
@@ -39,6 +40,29 @@ nix_packages:
     - nixpkgs.python38Packages.ptpython
     - nixpkgs.python38Packages.pycodestyle
     - nixpkgs.python38Packages.pylint
+    # Utilities
+    - nixpkgs.python38Packages.pillow
+    - nixpkgs.python38Packages.pyyaml
+    - nixpkgs.python38Packages.pygments
+    - nixpkgs.python38Packages.arrow
+    - nixpkgs.python38Packages.atomicwrites
+    - nixpkgs.python38Packages.attrs
+    - nixpkgs.python38Packages.beautifulsoup4
+    - nixpkgs.python38Packages.cached-property
+    - nixpkgs.python38Packages.cachetools
+    - nixpkgs.python38Packages.colorama
+    - nixpkgs.python38Packages.more-itertools
+    - nixpkgs.python38Packages.numpy
+    - nixpkgs.python38Packages.pynvim
+    - nixpkgs.python38Packages.dateutil
+    # - nixpkgs.python38Packages.python-decouple
+    - nixpkgs.python38Packages.requests
+    - nixpkgs.python38Packages.termcolor
+    - nixpkgs.python38Packages.toml
+    - nixpkgs.python38Packages.unidecode
+    - nixpkgs.python38Packages.urllib3
+    - nixpkgs.python38Packages.virtualenv
+    - nixpkgs.python38Packages.wcwidth
 
     - nixpkgs.gitAndTools.gitFull  # GPL v2
     - nixpkgs.git-lfs  # MIT
@@ -137,30 +161,7 @@ nix_packages:
 
 pip_bin: '{{ nix_bins }}/pip3'
 pip_packages:
-    - setuptools
-    - Pillow
-    - PyYAML
-    - Pygments
-    - arrow
-    - atomicwrites
-    - attrs
-    - beautifulsoup4
-    - cached-property
-    - cachetools
-    - colorama
-    - more-itertools
-    - neovim
-    - numpy
-    - pynvim
-    - python-dateutil
     - python-decouple
-    - requests
-    - termcolor
-    - toml
-    - unidecode
-    - urllib3
-    - virtualenv
-    - wcwidth
 
 ruby_gems:
     - bundler
